@@ -12,6 +12,8 @@ services:
       - SERVER_NAME=:80
       - APP_RUNTIME=Symfony\Component\Runtime\GenericRuntime
       - APP_ENV=dev
+      - MERCURE_URL=http://127.0.0.1/.well-known/mercure
+      - MERCURE_PUBLIC_URL=http://localhost:8080/.well-known/mercure
       - MERCURE_PUBLISHER_JWT_KEY=a-very-secret-key
       - MERCURE_SUBSCRIBER_JWT_KEY=a-very-secret-key
     tty: true

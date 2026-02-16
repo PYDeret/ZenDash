@@ -14,7 +14,7 @@ use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[Broadcast]
+//#[Broadcast]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 #[UniqueEntity(fields: ['nickname'], message: 'Ce pseudo est déjà utilisé.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface

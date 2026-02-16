@@ -12,6 +12,8 @@ services:
       - SERVER_NAME=:80
       - APP_RUNTIME=Symfony\Component\Runtime\GenericRuntime
       - APP_ENV=dev
+      - MERCURE_PUBLISHER_JWT_KEY=a-very-secret-key
+      - MERCURE_SUBSCRIBER_JWT_KEY=a-very-secret-key
     tty: true
 
   db:

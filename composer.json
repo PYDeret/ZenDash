@@ -81,10 +81,12 @@
             "importmap:install": "symfony-cmd"
         },
         "post-install-cmd": [
-            "@auto-scripts"
+            "@auto-scripts",
+            "git config core.hooksPath scripts"
         ],
         "post-update-cmd": [
-            "@auto-scripts"
+            "@auto-scripts",
+            "git config core.hooksPath scripts"
         ],
         "fix": "php-cs-fixer fix",
         "stan": "phpstan analyse",

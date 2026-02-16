@@ -81,10 +81,18 @@
             "importmap:install": "symfony-cmd"
         },
         "post-install-cmd": [
-            "@auto-scripts"
+            "@auto-scripts",
+            "git config core.hooksPath scripts"
         ],
         "post-update-cmd": [
-            "@auto-scripts"
+            "@auto-scripts",
+            "git config core.hooksPath scripts"
+        ],
+        "fix": "php-cs-fixer fix",
+        "stan": "phpstan analyse",
+        "qa": [
+            "@fix",
+            "@stan"
         ]
     },
     "conflict": {
@@ -98,6 +106,10 @@
         }
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.94",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-doctrine": "^2.0",
+        "phpstan/phpstan-symfony": "^2.0",
         "phpunit/phpunit": "^12.5",
         "symfony/browser-kit": "7.4.*",
         "symfony/css-selector": "7.4.*",

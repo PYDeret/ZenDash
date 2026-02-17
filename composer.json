@@ -89,10 +89,12 @@
             "git config core.hooksPath scripts"
         ],
         "fix": "php-cs-fixer fix",
-        "stan": "phpstan analyse",
+        "stan": "phpstan analyse --memory-limit=512M",
+        "tests": "APP_ENV=test php bin/phpunit --colors=always",
         "qa": [
             "@fix",
-            "@stan"
+            "@stan",
+            "@tests"
         ]
     },
     "conflict": {

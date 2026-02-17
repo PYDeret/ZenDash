@@ -6,12 +6,18 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[Broadcast]
-class User
+// #[Broadcast]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['nickname'], message: 'Ce pseudo est déjà utilisé.')]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,11 +30,10 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $firstName = null;
+    #[ORM\Column(length: 255, unique: true)]
+    #[Assert\NotBlank(message: 'N\'oublie pas ton petit nom !')]
+    #[Assert\Length(min: 3, max: 20)]
+    private ?string $nickname = null;
 
     public function getId(): ?int
     {
@@ -59,27 +64,34 @@ class User
         return $this;
     }
 
-    public function getName(): ?string
+    public function getNickname(): ?string
     {
-        return $this->name;
+        return $this->nickname;
     }
 
-    public function setName(string $name): static
+    public function setNickname(?string $nickname): static
     {
-        $this->name = $name;
+        $this->nickname = $nickname;
 
         return $this;
     }
 
-    public function getFirstName(): ?string
+    public function getRoles(): array
     {
-        return $this->firstName;
+        return [];
     }
 
-    public function setFirstName(string $firstName): static
+    public function eraseCredentials(): void
     {
-        $this->firstName = $firstName;
+    }
 
-        return $this;
+    public function getUserIdentifier(): string
+    {
+        $email = $this->getEmail();
+        if (empty($email)) {
+            throw new \UnexpectedValueException('Email cannot be empty');
+        }
+
+        return $email;
     }
 }

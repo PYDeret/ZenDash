@@ -69,7 +69,7 @@
 /assets/vendor/
 ###< symfony/asset-mapper ###
 
-.idea
+.idea/*
 
 ###> friendsofphp/php-cs-fixer ###
 /.php-cs-fixer.php

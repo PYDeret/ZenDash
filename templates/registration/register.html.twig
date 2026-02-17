@@ -8,10 +8,15 @@
     {{ form_start(registrationForm) }}
         {{ form_row(registrationForm.email) }}
         {{ form_row(registrationForm.nickname) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+        {{
+            form_row(registrationForm.plainPassword, {
+                label: 'Password'
+            })
+        }}
+        <label>
+            {{ form_widget(registrationForm.agreeTerms) }}
+            J'accepte les conditions d'utilisation
+        </label>
 
         <button type="submit" class="btn">S'inscrire</button>
     {{ form_end(registrationForm) }}

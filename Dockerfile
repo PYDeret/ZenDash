@@ -4,6 +4,8 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 
 RUN install-php-extensions pdo_pgsql intl zip bcmath
 
+RUN apk add --no-cache bash
+
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 WORKDIR /app

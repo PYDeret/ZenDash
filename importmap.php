@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Returns the importmap for this application.
  *
@@ -26,5 +24,12 @@ return [
     ],
     '@hotwired/turbo' => [
         'version' => '7.3.0',
+    ],
+    '@picocss/pico' => [
+        'version' => '2.1.1',
+    ],
+    '@picocss/pico/css/pico.min.css' => [
+        'version' => '2.1.1',
+        'type' => 'css',
     ],
 ];

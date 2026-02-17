@@ -30,13 +30,27 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
     public function authenticate(Request $request): Passport
     {
         $email = $request->request->get('email', '');
+        if (!is_string($email)) {
+            throw new \InvalidArgumentException('Email must be a string');
+        }
+
+        $password = $request->request->get('password', '');
+        if (!is_string($password)) {
+            throw new \InvalidArgumentException('Password must be a string');
+        }
+
+        $csrfToken = $request->request->get('_csrf_token');
+        if (!is_string($csrfToken)) {
+            throw new \InvalidArgumentException('CSRF token must be a string');
+        }
+
         $request->getSession()->set('_security.last_username', $email);
 
         return new Passport(
             new UserBadge($email),
-            new PasswordCredentials($request->request->get('password', '')),
+            new PasswordCredentials($password),
             [
-                new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
+                new CsrfTokenBadge('authenticate', $csrfToken),
                 new RememberMeBadge(),
             ]
         );

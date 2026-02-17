@@ -1,17 +1,21 @@
 #!/bin/sh
 
-if ! docker ps | grep -q zendash-php-1; then
-    echo "⚠️  Erreur : Le conteneur zendash-php-1 n'est pas lancé."
+CONTAINER="zendash-php-1"
+
+if ! docker ps | grep -q "$CONTAINER"; then
+    echo "⚠️  Erreur : Le conteneur $CONTAINER n'est pas lancé."
     echo "Lance 'docker compose up -d' avant de push."
     exit 1
 fi
 
-echo "🚀 Analyse QA en cours..."
+echo "🚀 Lancement de la QA / tests..."
 
-# Exécution des tests
-docker exec zendash-php-1 composer qa
+docker exec -e APP_ENV=test -e APP_DEBUG=1 "$CONTAINER" composer qa
 
-if [ $? -ne 0 ]; then
+# Capture the exit code
+QA_EXIT_CODE=$?
+
+if [ $QA_EXIT_CODE -ne 0 ]; then
     echo "❌ Échec de la QA. Corrige les erreurs avant de push."
     exit 1
 fi

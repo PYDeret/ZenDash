@@ -29,12 +29,12 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $email = $request->request->get('email', '');
+        $email = $request->request->get('_username', '');
         if (!is_string($email)) {
             throw new \InvalidArgumentException('Email must be a string');
         }
 
-        $password = $request->request->get('password', '');
+        $password = $request->request->get('_password', '');
         if (!is_string($password)) {
             throw new \InvalidArgumentException('Password must be a string');
         }

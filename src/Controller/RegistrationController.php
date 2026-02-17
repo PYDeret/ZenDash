@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Security\LoginAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -33,11 +34,10 @@ class RegistrationController extends AbstractController
             /** @var string $plainPassword */
             $plainPassword = $form->get('plainPassword')->getData();
             $user->setPassword($this->userPasswordHasher->hashPassword($user, $plainPassword));
-
             $this->entityManager->persist($user);
             $this->entityManager->flush();
 
-            return $this->security->login($user, 'form_login', 'main');
+            return $this->security->login($user, LoginAuthenticator::class, 'main');
         }
 
         return $this->render('registration/register.html.twig', [

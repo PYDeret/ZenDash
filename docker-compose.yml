@@ -29,5 +29,11 @@ services:
     ports:
       - "5432:5432"
 
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8081:8080"
+
 volumes:
   db-data:

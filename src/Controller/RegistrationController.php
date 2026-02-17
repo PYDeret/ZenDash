@@ -20,8 +20,9 @@ class RegistrationController extends AbstractController
     public function __construct(
         private readonly Security $security,
         private readonly EntityManagerInterface $entityManager,
-        private readonly UserPasswordHasherInterface $userPasswordHasher
-    ) {}
+        private readonly UserPasswordHasherInterface $userPasswordHasher,
+    ) {
+    }
 
     #[Route('/register', name: 'app_register')]
     public function register(Request $request): Response

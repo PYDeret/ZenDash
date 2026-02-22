@@ -157,6 +157,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpstan/phpstan-doctrine" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpstan/phpstan-symfony" />
       <excludeFolder url="file://$MODULE_DIR$/var/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/var/log" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfonycasts/sass-bundle" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

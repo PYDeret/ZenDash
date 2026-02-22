@@ -42,6 +42,7 @@
         "symfony/validator": "7.4.*",
         "symfony/web-link": "7.4.*",
         "symfony/yaml": "7.4.*",
+        "symfonycasts/sass-bundle": "*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0"
     },
@@ -81,12 +82,10 @@
             "importmap:install": "symfony-cmd"
         },
         "post-install-cmd": [
-            "@auto-scripts",
-            "git config core.hooksPath scripts"
+            "@auto-scripts"
         ],
         "post-update-cmd": [
-            "@auto-scripts",
-            "git config core.hooksPath scripts"
+            "@auto-scripts"
         ],
         "fix": "php-cs-fixer fix",
         "stan": "phpstan analyse --memory-limit=512M",

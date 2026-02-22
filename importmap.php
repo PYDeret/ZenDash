@@ -27,4 +27,11 @@ return [
     '@hotwired/turbo' => [
         'version' => '7.3.0',
     ],
+    'materialize-css' => [
+        'version' => '1.0.0',
+    ],
+    'materialize-css/dist/css/materialize.min.css' => [
+        'version' => '1.0.0',
+        'type' => 'css',
+    ],
 ];

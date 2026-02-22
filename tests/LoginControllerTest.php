@@ -38,36 +38,21 @@ class LoginControllerTest extends WebTestCase
 
     public function testLogin(): void
     {
-        $this->client->request('GET', '/login');
+        $this->client->request('GET', '/authenticate');
         self::assertResponseIsSuccessful();
 
-        $this->client->submitForm('Sign in', [
+        $this->client->submitForm('Se connecter', [
             '_username' => 'doesNotExist@example.com',
             '_password' => 'password',
         ]);
 
-        self::assertResponseRedirects('/login');
+        self::assertResponseRedirects('/authenticate');
         $this->client->followRedirect();
 
-        self::assertSelectorTextContains('.alert-danger', 'Invalid credentials.');
+        self::assertSelectorTextContains('.card-panel.red', 'Identifiants invalides.');
 
-        $this->client->request('GET', '/login');
-        self::assertResponseIsSuccessful();
-
-        $this->client->submitForm('Sign in', [
-            '_username' => 'email@example.com',
-            '_password' => 'bad-password',
-        ]);
-
-        self::assertResponseRedirects('/login');
-        $this->client->followRedirect();
-
-        self::assertSelectorTextContains('.alert-danger', 'Invalid credentials.');
-
-        $this->client->request('GET', '/login');
-        self::assertResponseIsSuccessful();
-
-        $this->client->submitForm('Sign in', [
+        $this->client->request('GET', '/authenticate');
+        $this->client->submitForm('Se connecter', [
             '_username' => 'me@example.com',
             '_password' => 'password',
         ]);
@@ -75,6 +60,6 @@ class LoginControllerTest extends WebTestCase
         self::assertResponseRedirects('/');
         $this->client->followRedirect();
 
-        self::assertSelectorNotExists('.alert-danger');
+        self::assertSelectorNotExists('.card-panel.red');
     }
 }

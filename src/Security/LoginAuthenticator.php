@@ -21,7 +21,7 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'app_login';
+    public const LOGIN_ROUTE = 'app_auth';
 
     public function __construct(private readonly UrlGeneratorInterface $urlGenerator)
     {
@@ -68,5 +68,10 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
     protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+    }
+
+    public function supports(Request $request): bool
+    {
+        return self::LOGIN_ROUTE === $request->attributes->get('_route') && $request->isMethod('POST') && $request->request->has('_username');
     }
 }

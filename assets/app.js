@@ -7,4 +7,10 @@ import './stimulus_bootstrap.js';
  */
 import './styles/app.css';
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+import M from 'materialize-css';
+
+document.addEventListener('turbo:load', function() {
+    const tabs = document.querySelectorAll('.tabs');
+    M.Tabs.init(tabs);
+    M.updateTextFields();
+});

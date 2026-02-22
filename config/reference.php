@@ -1532,6 +1532,24 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     default_cookie_lifetime?: int|Param, // Default lifetime of the cookie containing the JWT, in seconds. Defaults to the value of "framework.session.cookie_lifetime". // Default: null
  *     enable_profiler?: bool|Param, // Deprecated: The child node "enable_profiler" at path "mercure.enable_profiler" is deprecated. // Enable Symfony Web Profiler integration.
  * }
+ * @psalm-type SymfonycastsSassConfig = array{
+ *     root_sass?: list<scalar|Param|null>,
+ *     binary?: scalar|Param|null, // The Sass binary to use // Default: null
+ *     sass_options?: array{
+ *         style?: "compressed"|"expanded"|Param, // The style of the generated CSS: compressed or expanded. // Default: "expanded"
+ *         charset?: bool|Param, // Whether to include the charset declaration in the generated Sass.
+ *         error_css?: bool|Param, // Emit a CSS file when an error occurs.
+ *         source_map?: bool|Param, // Whether to generate source maps. // Default: true
+ *         embed_sources?: bool|Param, // Embed source file contents in source maps.
+ *         embed_source_map?: bool|Param, // Embed source map contents in CSS. // Default: "%kernel.debug%"
+ *         load_path?: list<scalar|Param|null>,
+ *         quiet?: bool|Param, // Don't print warnings.
+ *         quiet_deps?: bool|Param, // Don't print compiler warnings from dependencies.
+ *         stop_on_error?: bool|Param, // Don't compile more files once an error is encountered.
+ *         trace?: bool|Param, // Print full Dart stack traces for exceptions.
+ *     },
+ *     embed_sourcemap?: bool|Param|null, // Deprecated: Option "embed_sourcemap" at "symfonycasts_sass.embed_sourcemap" is deprecated. Use "sass_options.embed_source_map" instead". // Default: null
+ * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
@@ -1546,6 +1564,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     security?: SecurityConfig,
  *     monolog?: MonologConfig,
  *     mercure?: MercureConfig,
+ *     symfonycasts_sass?: SymfonycastsSassConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -1563,6 +1582,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         monolog?: MonologConfig,
  *         maker?: MakerConfig,
  *         mercure?: MercureConfig,
+ *         symfonycasts_sass?: SymfonycastsSassConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -1578,6 +1598,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         security?: SecurityConfig,
  *         monolog?: MonologConfig,
  *         mercure?: MercureConfig,
+ *         symfonycasts_sass?: SymfonycastsSassConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -1594,6 +1615,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         security?: SecurityConfig,
  *         monolog?: MonologConfig,
  *         mercure?: MercureConfig,
+ *         symfonycasts_sass?: SymfonycastsSassConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,

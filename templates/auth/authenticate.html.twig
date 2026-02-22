@@ -1,82 +1,92 @@
 {% extends 'base.html.twig' %}
 
+{% set trans_domain = 'authentication' %}
+
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('vendor/materialize-css/dist/css/materialize.min.css') }}">
     <link rel="stylesheet" href="{{ asset('styles/authentification/authentification.scss') }}">
 {% endblock %}
 
 {% block body %}
-    <div class="container white z-depth-2">
+    <div class="container white z-depth-2" data-active-tab="{{ active_tab|default('login') }}">
         {% if app.user %}
             <div class="card-panel teal lighten-4">
-                Vous êtes authentifié en tant que **{{ app.user.userIdentifier }}**<br>
-                <a href="{{ logout_path() }}" class="teal-text text-darken-4">Se déconnecter</a>
+                <strong>{{ app.user.userIdentifier }}</strong><br>
+                <a href="{{ logout_path() }}" class="teal-text text-darken-4">
+                    {{ 'label.logout'|trans([], trans_domain) }}
+                </a>
             </div>
         {% endif %}
 
         {% if not app.user %}
             <ul class="tabs teal">
-                <li class="tab col s3"><a class="white-text active" href="#login">Se connecter</a></li>
-                <li class="tab col s3"><a class="white-text" href="#register">S'enregistrer</a></li>
+                <li class="tab col s6">
+                    <a class="white-text" href="#login">{{ 'label.connect'|trans([], trans_domain) }}</a>
+                </li>
+                <li class="tab col s6">
+                    <a class="white-text" href="#register">{{ 'label.create_account'|trans([], trans_domain) }}</a>
+                </li>
             </ul>
 
+            {# SECTION LOGIN #}
             <div id="login" class="col s12">
                 <form method="post">
                     <div class="form-container" style="padding: 20px;">
-                        <h3 class="teal-text center">Hello</h3>
                         {% if error %}
                             <div class="card-panel red darken-2 white-text">
-                                {{ error.messageKey|trans(error.messageData, 'security') }}
+                                {# Utilisation de ta clé personnalisée pour les identifiants invalides #}
+                                {{ 'error.invalid_credentials'|trans([], trans_domain) }}
                             </div>
                         {% endif %}
 
                         <div class="row">
                             <div class="input-field col s12">
                                 <input type="email" value="{{ last_username }}" name="_username" id="username" class="validate" autocomplete="email" required autofocus>
-                                <label for="username">Email</label>
+                                <label for="username">{{ 'label.email'|trans([], trans_domain) }}</label>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="input-field col s12">
                                 <input type="password" name="_password" id="password" class="validate" autocomplete="current-password" required>
-                                <label for="password">Mot de passe</label>
+                                <label for="password">{{ 'label.password'|trans([], trans_domain) }}</label>
                             </div>
                         </div>
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                         <br>
                         <div style="text-align: center;">
                             <button class="btn waves-effect waves-light teal" type="submit">
-                                Se connecter
+                                {{ 'label.connect'|trans([], trans_domain) }}
                             </button>
                         </div>
                     </div>
                 </form>
             </div>
 
+            {# SECTION REGISTER #}
             <div id="register" class="col s12">
                 {{ form_start(registrationForm, {'attr': {'class': 'col s12'}}) }}
-                <div class="form-container">
-                    <h3 class="teal-text">S'enregistrer</h3>
+                <div class="form-container" style="padding: 20px;">
+                    <h3 class="teal-text center">{{ 'label.create_account'|trans([], trans_domain) }}</h3>
 
                     <div class="row">
                         <div class="input-field col s12">
                             {{ form_widget(registrationForm.email, {'attr': {'class': 'validate'}}) }}
-                            {{ form_label(registrationForm.email) }}
+                            <label for="{{ registrationForm.email.vars.id }}">{{ 'label.email'|trans([], trans_domain) }}</label>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="input-field col s12">
                             {{ form_widget(registrationForm.nickname, {'attr': {'class': 'validate'}}) }}
-                            {{ form_label(registrationForm.nickname) }}
+                            <label for="{{ registrationForm.nickname.vars.id }}">{{ 'label.nickname'|trans([], trans_domain) }}</label>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="input-field col s12">
                             {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'validate'}}) }}
-                            <label for="{{ registrationForm.plainPassword.vars.id }}">Mot de passe</label>
+                            <label for="{{ registrationForm.plainPassword.vars.id }}">{{ 'label.password'|trans([], trans_domain) }}</label>
                         </div>
                     </div>
 
@@ -84,15 +94,17 @@
                         <div class="col s12">
                             <label>
                                 {{ form_widget(registrationForm.agreeTerms) }}
-                                <span>J'accepte les conditions d'utilisation</span>
+                                <span>{{ 'label.accept_cgu'|trans([], trans_domain) }}</span>
                             </label>
-                            {{ form_errors(registrationForm.agreeTerms) }}
+                            <div class="red-text" style="font-size: 0.8rem;">
+                                {{ form_errors(registrationForm.agreeTerms) }}
+                            </div>
                         </div>
                     </div>
 
                     <div style="text-align: center;">
                         <button class="btn waves-effect waves-light teal" type="submit">
-                            S'inscrire
+                            {{ 'label.register'|trans([], trans_domain) }}
                         </button>
                     </div>
                 </div>

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Returns the importmap for this application.
  *
@@ -25,11 +27,11 @@ return [
     '@hotwired/turbo' => [
         'version' => '7.3.0',
     ],
-    '@picocss/pico' => [
-        'version' => '2.1.1',
+    'materialize-css' => [
+        'version' => '1.0.0',
     ],
-    '@picocss/pico/css/pico.min.css' => [
-        'version' => '2.1.1',
+    'materialize-css/dist/css/materialize.min.css' => [
+        'version' => '1.0.0',
         'type' => 'css',
     ],
 ];

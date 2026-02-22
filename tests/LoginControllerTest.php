@@ -49,7 +49,7 @@ class LoginControllerTest extends WebTestCase
         self::assertResponseRedirects('/authenticate');
         $this->client->followRedirect();
 
-        self::assertSelectorTextContains('.card-panel.red', 'Invalid credentials.');
+        self::assertSelectorTextContains('.card-panel.red', 'Identifiants invalides.');
 
         $this->client->request('GET', '/authenticate');
         $this->client->submitForm('Se connecter', [

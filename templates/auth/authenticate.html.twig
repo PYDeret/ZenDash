@@ -7,54 +7,55 @@
 
 {% block body %}
     <div class="container white z-depth-2">
-        <ul class="tabs teal">
-            <li class="tab col s3"><a class="white-text active" href="#login">Se connecter</a></li>
-            <li class="tab col s3"><a class="white-text" href="#register">S'enregistrer</a></li>
-        </ul>
+        {% if app.user %}
+            <div class="card-panel teal lighten-4">
+                Vous êtes authentifié en tant que **{{ app.user.userIdentifier }}**<br>
+                <a href="{{ logout_path() }}" class="teal-text text-darken-4">Se déconnecter</a>
+            </div>
+        {% endif %}
 
-        <div id="login" class="col s12">
-            <form method="post">
-                <div class="form-container" style="padding: 20px;">
-                    <h3 class="teal-text center">Hello</h3>
-                    {% if error %}
-                        <div class="card-panel red darken-2 white-text">
-                            {{ error.messageKey|trans(error.messageData, 'security') }}
+        {% if not app.user %}
+            <ul class="tabs teal">
+                <li class="tab col s3"><a class="white-text active" href="#login">Se connecter</a></li>
+                <li class="tab col s3"><a class="white-text" href="#register">S'enregistrer</a></li>
+            </ul>
+
+            <div id="login" class="col s12">
+                <form method="post">
+                    <div class="form-container" style="padding: 20px;">
+                        <h3 class="teal-text center">Hello</h3>
+                        {% if error %}
+                            <div class="card-panel red darken-2 white-text">
+                                {{ error.messageKey|trans(error.messageData, 'security') }}
+                            </div>
+                        {% endif %}
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="email" value="{{ last_username }}" name="_username" id="username" class="validate" autocomplete="email" required autofocus>
+                                <label for="username">Email</label>
+                            </div>
                         </div>
-                    {% endif %}
 
-                    {% if app.user %}
-                        <div class="card-panel teal lighten-4">
-                            Vous êtes authentifié en tant que **{{ app.user.userIdentifier }}**<br>
-                            <a href="{{ logout_path() }}" class="teal-text text-darken-4">Se déconnecter</a>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="password" name="_password" id="password" class="validate" autocomplete="current-password" required>
+                                <label for="password">Mot de passe</label>
+                            </div>
                         </div>
-                    {% endif %}
-
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input type="email" value="{{ last_username }}" name="_username" id="username" class="validate" autocomplete="email" required autofocus>
-                            <label for="username">Email</label>
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                        <br>
+                        <div style="text-align: center;">
+                            <button class="btn waves-effect waves-light teal" type="submit">
+                                Se connecter
+                            </button>
                         </div>
                     </div>
+                </form>
+            </div>
 
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input type="password" name="_password" id="password" class="validate" autocomplete="current-password" required>
-                            <label for="password">Mot de passe</label>
-                        </div>
-                    </div>
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                    <br>
-                    <div style="text-align: center;">
-                        <button class="btn waves-effect waves-light teal" type="submit">
-                            Se connecter
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <div id="register" class="col s12">
-            {{ form_start(registrationForm, {'attr': {'class': 'col s12'}}) }}
+            <div id="register" class="col s12">
+                {{ form_start(registrationForm, {'attr': {'class': 'col s12'}}) }}
                 <div class="form-container">
                     <h3 class="teal-text">S'enregistrer</h3>
 
@@ -95,7 +96,8 @@
                         </button>
                     </div>
                 </div>
-            {{ form_end(registrationForm) }}
-        </div>
+                {{ form_end(registrationForm) }}
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

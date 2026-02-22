@@ -8,16 +8,19 @@ use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LoginControllerTest extends WebTestCase
 {
     private KernelBrowser $client;
+    private TranslatorInterface $translator;
 
     protected function setUp(): void
     {
         $this->client = static::createClient();
         $container = static::getContainer();
         $em = $container->get('doctrine.orm.entity_manager');
+        $this->translator = $container->get(TranslatorInterface::class);
         $userRepository = $em->getRepository(User::class);
 
         foreach ($userRepository->findAll() as $user) {
@@ -49,7 +52,7 @@ class LoginControllerTest extends WebTestCase
         self::assertResponseRedirects('/authenticate');
         $this->client->followRedirect();
 
-        self::assertSelectorTextContains('.card-panel.red', 'Identifiants invalides.');
+        self::assertSelectorTextContains('.card-panel.red', $this->translator->trans('error.invalid_credentials', [], 'authentication'));
 
         $this->client->request('GET', '/authenticate');
         $this->client->submitForm('Se connecter', [

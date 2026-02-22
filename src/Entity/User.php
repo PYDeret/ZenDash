@@ -15,8 +15,8 @@ use Symfony\UX\Turbo\Attribute\Broadcast;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 // #[Broadcast]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-#[UniqueEntity(fields: ['nickname'], message: 'Ce pseudo est déjà utilisé.')]
+#[UniqueEntity(fields: ['email'], message: 'authentication.error.email_already_exists')]
+#[UniqueEntity(fields: ['nickname'], message: 'authentication.error.nickname_already_exists.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -31,7 +31,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    #[Assert\NotBlank(message: 'N\'oublie pas ton petit nom !')]
     #[Assert\Length(min: 3, max: 20)]
     private ?string $nickname = null;
 
@@ -89,7 +88,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $email = $this->getEmail();
         if (empty($email)) {
-            throw new \UnexpectedValueException('Email cannot be empty');
+            throw new \UnexpectedValueException('');
         }
 
         return $email;

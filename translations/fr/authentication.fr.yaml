@@ -1,0 +1,18 @@
+error:
+    email_type: 'L''email doit être un champ texte.'
+    password_type: 'Le mot de passe doit être un champ texte.'
+    csrf_type: 'Le CSRF Token doit être un champ texte.'
+    invalid_credentials: "Identifiants invalides. Merci de vérifier votre email ou mot de passe."
+    must_accept_cgu: 'Vous devez accepter les conditions d\''utilisation.'
+    mandatory_password: 'Vous devez fournir un mot de passe.'
+    email_already_exists: 'Un compte utilisant ce mail existe déjà.'
+    nickname_already_exists: 'Un compte utilisant ce pseudo existe déjà.'
+label:
+    register: 'S''inscrire'
+    create_account: 'S''enregistrer'
+    connect: 'Se connecter'
+    logout: 'Se déconnecter'
+    email: 'Email'
+    nickname: 'Pseudo'
+    password: 'Mot de passe'
+    accept_cgu: 'J''accepte les conditions d''utilisation'

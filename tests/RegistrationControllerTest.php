@@ -8,11 +8,13 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RegistrationControllerTest extends WebTestCase
 {
     private KernelBrowser $client;
     private UserRepository $userRepository;
+    private TranslatorInterface $translator;
 
     /**
      * @throws \Doctrine\ORM\Exception\ORMException
@@ -22,6 +24,7 @@ class RegistrationControllerTest extends WebTestCase
     {
         $this->client = static::createClient();
         $container = static::getContainer();
+        $this->translator = $container->get(TranslatorInterface::class);
 
         /** @var EntityManager $em */
         $em = $container->get('doctrine')->getManager();
@@ -39,7 +42,7 @@ class RegistrationControllerTest extends WebTestCase
         $this->client->request('GET', '/authenticate');
         self::assertResponseIsSuccessful();
 
-        $this->client->submitForm('S\'inscrire', [
+        $this->client->submitForm($this->translator->trans('label.register', [], 'authentication'), [
             'registration_form[email]' => 'newuser@example.com',
             'registration_form[nickname]' => 'newbie',
             'registration_form[plainPassword]' => 'password123',

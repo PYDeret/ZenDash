@@ -16,6 +16,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LoginAuthenticator extends AbstractLoginFormAuthenticator
 {
@@ -23,25 +24,27 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
     public const LOGIN_ROUTE = 'app_auth';
 
-    public function __construct(private readonly UrlGeneratorInterface $urlGenerator)
-    {
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        private readonly UrlGeneratorInterface $urlGenerator,
+    ) {
     }
 
     public function authenticate(Request $request): Passport
     {
         $email = $request->request->get('_username', '');
         if (!is_string($email)) {
-            throw new \InvalidArgumentException('Email must be a string');
+            throw new \InvalidArgumentException($this->translator->trans('error.email_type', [], 'authentication'));
         }
 
         $password = $request->request->get('_password', '');
         if (!is_string($password)) {
-            throw new \InvalidArgumentException('Password must be a string');
+            throw new \InvalidArgumentException($this->translator->trans('error.password_type', [], 'authentication'));
         }
 
         $csrfToken = $request->request->get('_csrf_token');
         if (!is_string($csrfToken)) {
-            throw new \InvalidArgumentException('CSRF token must be a string');
+            throw new \InvalidArgumentException($this->translator->trans('error.csrf_type', [], 'authentication'));
         }
 
         $request->getSession()->set('_security.last_username', $email);

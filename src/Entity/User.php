@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -33,6 +35,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, unique: true)]
     #[Assert\Length(min: 3, max: 20)]
     private ?string $nickname = null;
+
+    /**
+     * @var Collection<int, Widget>
+     */
+    #[ORM\OneToMany(targetEntity: Widget::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $widgets;
+
+    /** @var array<string> */
+    private array $roles = [];
+
+    public function __construct()
+    {
+        $this->widgets = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -77,7 +93,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
-        return [];
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
     public function eraseCredentials(): void
@@ -92,5 +111,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $email;
+    }
+
+    /**
+     * @return Collection<int, Widget>
+     */
+    public function getWidgets(): Collection
+    {
+        return $this->widgets;
+    }
+
+    public function addWidget(Widget $widget): static
+    {
+        if (!$this->widgets->contains($widget)) {
+            $this->widgets->add($widget);
+            $widget->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWidget(Widget $widget): static
+    {
+        if ($this->widgets->removeElement($widget) && $widget->getUser() === $this) {
+            $widget->setUser(null);
+        }
+
+        return $this;
     }
 }

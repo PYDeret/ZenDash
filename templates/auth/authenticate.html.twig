@@ -9,107 +9,94 @@
 
 {% block body %}
     <div class="container white z-depth-2" data-active-tab="{{ active_tab|default('login') }}">
-        {% if app.user %}
-            <div class="card-panel teal lighten-4">
-                <strong>{{ app.user.userIdentifier }}</strong><br>
-                <a href="{{ logout_path() }}" class="teal-text text-darken-4">
-                    {{ 'label.logout'|trans([], trans_domain) }}
-                </a>
-            </div>
-        {% endif %}
+        <ul class="tabs teal">
+            <li class="tab col s6">
+                <a class="white-text" href="#login">{{ 'label.connect'|trans([], trans_domain) }}</a>
+            </li>
+            <li class="tab col s6">
+                <a class="white-text" href="#register">{{ 'label.create_account'|trans([], trans_domain) }}</a>
+            </li>
+        </ul>
 
-        {% if not app.user %}
-            <ul class="tabs teal">
-                <li class="tab col s6">
-                    <a class="white-text" href="#login">{{ 'label.connect'|trans([], trans_domain) }}</a>
-                </li>
-                <li class="tab col s6">
-                    <a class="white-text" href="#register">{{ 'label.create_account'|trans([], trans_domain) }}</a>
-                </li>
-            </ul>
-
-            {# SECTION LOGIN #}
-            <div id="login" class="col s12">
-                <form method="post">
-                    <div class="form-container" style="padding: 20px;">
-                        {% if error %}
-                            <div class="card-panel red darken-2 white-text">
-                                {# Utilisation de ta clé personnalisée pour les identifiants invalides #}
-                                {{ 'error.invalid_credentials'|trans([], trans_domain) }}
-                            </div>
-                        {% endif %}
-
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input type="email" value="{{ last_username }}" name="_username" id="username" class="validate" autocomplete="email" required autofocus>
-                                <label for="username">{{ 'label.email'|trans([], trans_domain) }}</label>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input type="password" name="_password" id="password" class="validate" autocomplete="current-password" required>
-                                <label for="password">{{ 'label.password'|trans([], trans_domain) }}</label>
-                            </div>
-                        </div>
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                        <br>
-                        <div style="text-align: center;">
-                            <button class="btn waves-effect waves-light teal" type="submit">
-                                {{ 'label.connect'|trans([], trans_domain) }}
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            {# SECTION REGISTER #}
-            <div id="register" class="col s12">
-                {{ form_start(registrationForm, {'attr': {'class': 'col s12'}}) }}
+        {# SECTION LOGIN #}
+        <div id="login" class="col s12">
+            <form method="post">
                 <div class="form-container" style="padding: 20px;">
-                    <h3 class="teal-text center">{{ 'label.create_account'|trans([], trans_domain) }}</h3>
-
-                    <div class="row">
-                        <div class="input-field col s12">
-                            {{ form_widget(registrationForm.email, {'attr': {'class': 'validate'}}) }}
-                            <label for="{{ registrationForm.email.vars.id }}">{{ 'label.email'|trans([], trans_domain) }}</label>
+                    {% if error %}
+                        <div class="card-panel red darken-2 white-text">
+                            {{ 'error.invalid_credentials'|trans([], trans_domain) }}
                         </div>
-                    </div>
+                    {% endif %}
 
                     <div class="row">
                         <div class="input-field col s12">
-                            {{ form_widget(registrationForm.nickname, {'attr': {'class': 'validate'}}) }}
-                            <label for="{{ registrationForm.nickname.vars.id }}">{{ 'label.nickname'|trans([], trans_domain) }}</label>
+                            <input type="email" value="{{ last_username }}" name="_username" id="username" class="validate" autocomplete="email" required autofocus>
+                            <label for="username">{{ 'label.email'|trans([], trans_domain) }}</label>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="input-field col s12">
-                            {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'validate'}}) }}
-                            <label for="{{ registrationForm.plainPassword.vars.id }}">{{ 'label.password'|trans([], trans_domain) }}</label>
+                            <input type="password" name="_password" id="password" class="validate" autocomplete="current-password" required>
+                            <label for="password">{{ 'label.password'|trans([], trans_domain) }}</label>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="col s12">
-                            <label>
-                                {{ form_widget(registrationForm.agreeTerms) }}
-                                <span>{{ 'label.accept_cgu'|trans([], trans_domain) }}</span>
-                            </label>
-                            <div class="red-text" style="font-size: 0.8rem;">
-                                {{ form_errors(registrationForm.agreeTerms) }}
-                            </div>
-                        </div>
-                    </div>
-
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <br>
                     <div style="text-align: center;">
                         <button class="btn waves-effect waves-light teal" type="submit">
-                            {{ 'label.register'|trans([], trans_domain) }}
+                            {{ 'label.connect'|trans([], trans_domain) }}
                         </button>
                     </div>
                 </div>
-                {{ form_end(registrationForm) }}
+            </form>
+        </div>
+
+        <div id="register" class="col s12">
+            {{ form_start(registrationForm, {'attr': {'class': 'col s12'}}) }}
+            <div class="form-container" style="padding: 20px;">
+                <h3 class="teal-text center">{{ 'label.create_account'|trans([], trans_domain) }}</h3>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        {{ form_widget(registrationForm.email, {'attr': {'class': 'validate'}}) }}
+                        <label for="{{ registrationForm.email.vars.id }}">{{ 'label.email'|trans([], trans_domain) }}</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        {{ form_widget(registrationForm.nickname, {'attr': {'class': 'validate'}}) }}
+                        <label for="{{ registrationForm.nickname.vars.id }}">{{ 'label.nickname'|trans([], trans_domain) }}</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'validate'}}) }}
+                        <label for="{{ registrationForm.plainPassword.vars.id }}">{{ 'label.password'|trans([], trans_domain) }}</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12">
+                        <label>
+                            {{ form_widget(registrationForm.agreeTerms) }}
+                            <span>{{ 'label.accept_cgu'|trans([], trans_domain) }}</span>
+                        </label>
+                        <div class="red-text" style="font-size: 0.8rem;">
+                            {{ form_errors(registrationForm.agreeTerms) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center;">
+                    <button class="btn waves-effect waves-light teal" type="submit">
+                        {{ 'label.register'|trans([], trans_domain) }}
+                    </button>
+                </div>
             </div>
-        {% endif %}
+            {{ form_end(registrationForm) }}
+        </div>
     </div>
 {% endblock %}

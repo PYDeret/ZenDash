@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('vendor/materialize-css/dist/css/materialize.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/widget/widget.scss') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h4>Mon Dashboard</h4>
+
+        {# Bouton pour créer un nouveau widget #}
+        <div class="right-align" style="margin-bottom: 20px;">
+            <a class="btn waves-effect waves-light modal-trigger" href="#create-widget-modal">
+                Ajouter un widget
+            </a>
+        </div>
+
+        {# Grille responsive de widgets #}
+        <div class="row">
+            {% if widget is defined %}
+                {% for widget in widgets %}
+                    <div class="col s12 m6 l4">
+                        <div class="card widget widget--{{ widget.type.value }}">
+                            <div class="card-content">
+                                <span class="card-title">{{ widget.title }}</span>
+
+                                {% if widget.type.value == 'note' %}
+                                    <p class="note-text">{{ widget.content.text }}</p>
+                                {% elseif widget.type.value == 'todo' %}
+                                    <ul class="collection">
+                                        {% for item in widget.content %}
+                                            <li class="collection-item">
+                                                <label>
+                                                    <input type="checkbox" {{ item.done ? 'checked' }}>
+                                                    <span class="{{ item.done ? 'todo-done' }}">{{ item.task }}</span>
+                                                </label>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% elseif widget.type.value == 'weather' %}
+                                    <div class="center-align">
+                                        <div class="weather-icon">☀️</div>
+                                        <div class="weather-temp">{{ widget.content.temp }}°C</div>
+                                        <div class="weather-city">{{ widget.content.city }}</div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Aucun widget pour le moment.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {# Modal pour créer un widget #}
+    <div id="create-widget-modal" class="modal">
+        <div class="modal-content">
+            <h5>Créer un widget</h5>
+            <form method="POST" action="">
+                <div class="input-field">
+                    <input id="title" name="title" type="text" required>
+                    <label for="title">Titre</label>
+                </div>
+
+                <div class="input-field">
+                    <select name="type" required>
+                        <option value="" disabled selected>Choisir un type</option>
+                        <option value="note">Note</option>
+                        <option value="todo">Todo</option>
+                        <option value="weather">Weather</option>
+                    </select>
+                    <label>Type de widget</label>
+                </div>
+
+                <button class="btn waves-effect waves-light" type="submit">Créer</button>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Fermer</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            M.Modal.init(document.querySelectorAll('.modal'));
+            M.FormSelect.init(document.querySelectorAll('select'));
+        });
+    </script>
+{% endblock %}

@@ -35,6 +35,15 @@
             "migrations/.gitignore"
         ]
     },
+    "fresh/doctrine-enum-bundle": {
+        "version": "11.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "6.0",
+            "ref": "fab86661c13bc12e4f14f706c86af09912d55bfb"
+        }
+    },
     "friendsofphp/php-cs-fixer": {
         "version": "3.94",
         "recipe": {

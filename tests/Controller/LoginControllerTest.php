@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests;
+namespace App\Tests\Controller;
 
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -44,7 +44,7 @@ class LoginControllerTest extends WebTestCase
         $this->client->request('GET', '/authenticate');
         self::assertResponseIsSuccessful();
 
-        $this->client->submitForm('Se connecter', [
+        $this->client->submitForm($this->translator->trans('label.connect', [], 'authentication'), [
             '_username' => 'doesNotExist@example.com',
             '_password' => 'password',
         ]);
@@ -55,12 +55,12 @@ class LoginControllerTest extends WebTestCase
         self::assertSelectorTextContains('.card-panel.red', $this->translator->trans('error.invalid_credentials', [], 'authentication'));
 
         $this->client->request('GET', '/authenticate');
-        $this->client->submitForm('Se connecter', [
+        $this->client->submitForm($this->translator->trans('label.connect', [], 'authentication'), [
             '_username' => 'me@example.com',
             '_password' => 'password',
         ]);
 
-        self::assertResponseRedirects('/');
+        self::assertResponseRedirects('/home');
         $this->client->followRedirect();
 
         self::assertSelectorNotExists('.card-panel.red');

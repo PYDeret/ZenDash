@@ -29,6 +29,10 @@ class AuthController extends AbstractController
     #[Route('/authenticate', name: 'app_auth')]
     public function authenticate(Request $request): ?Response
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_home');
+        }
+
         $error = $this->authenticationUtils->getLastAuthenticationError();
         $lastUsername = $this->authenticationUtils->getLastUsername();
 

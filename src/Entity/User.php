@@ -42,6 +42,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Widget::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $widgets;
 
+    /** @var array<string> */
+    private array $roles = [];
+
     public function __construct()
     {
         $this->widgets = new ArrayCollection();
@@ -90,7 +93,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
-        return [];
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
     public function eraseCredentials(): void

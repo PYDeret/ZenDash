@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests;
+namespace App\Tests\Controller;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
@@ -49,7 +49,7 @@ class RegistrationControllerTest extends WebTestCase
             'registration_form[agreeTerms]' => true,
         ]);
 
-        self::assertResponseRedirects('/');
+        self::assertResponseRedirects('/home');
         self::assertCount(1, $this->userRepository->findAll());
     }
 }

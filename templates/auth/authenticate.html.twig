@@ -3,12 +3,12 @@
 {% set trans_domain = 'authentication' %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('vendor/materialize-css/dist/css/materialize.min.css') }}">
+    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('styles/authentification/authentification.scss') }}">
 {% endblock %}
 
 {% block body %}
-    <div class="container white z-depth-2" data-active-tab="{{ active_tab|default('login') }}">
+    <div class="white z-depth-2" data-active-tab="{{ active_tab|default('login') }}">
         <ul class="tabs teal">
             <li class="tab col s6">
                 <a class="white-text" href="#login">{{ 'label.connect'|trans([], trans_domain) }}</a>

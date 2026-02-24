@@ -1,10 +1,14 @@
 import './stimulus_bootstrap.js';
-/*
- * Welcome to your app's main JavaScript file!
- *
- * This file will be included onto the page via the importmap() Twig function,
- * which should already be in your base.html.twig.
- */
+import M from 'materialize-css';
 import './styles/app.css';
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+function initMaterialize() {
+    M.Sidenav.init(document.querySelectorAll('.sidenav'));
+    M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'), { constrainWidth: false, coverTrigger: false });
+    M.Modal.init(document.querySelectorAll('.modal'));
+    M.FormSelect.init(document.querySelectorAll('select'));
+    M.Tabs.init(document.querySelectorAll('.tabs'));
+    M.updateTextFields();
+}
+
+document.addEventListener('turbo:load', initMaterialize);

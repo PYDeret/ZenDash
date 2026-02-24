@@ -1,15 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[Broadcast]
-class User
+// #[Broadcast]
+#[UniqueEntity(fields: ['email'], message: 'authentication.error.email_already_exists')]
+#[UniqueEntity(fields: ['nickname'], message: 'authentication.error.nickname_already_exists.')]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,11 +32,23 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    #[ORM\Column(length: 255, unique: true)]
+    #[Assert\Length(min: 3, max: 20)]
+    private ?string $nickname = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $firstName = null;
+    /**
+     * @var Collection<int, Widget>
+     */
+    #[ORM\OneToMany(targetEntity: Widget::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $widgets;
+
+    /** @var array<string> */
+    private array $roles = [];
+
+    public function __construct()
+    {
+        $this->widgets = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -57,26 +79,63 @@ class User
         return $this;
     }
 
-    public function getName(): ?string
+    public function getNickname(): ?string
     {
-        return $this->name;
+        return $this->nickname;
     }
 
-    public function setName(string $name): static
+    public function setNickname(?string $nickname): static
     {
-        $this->name = $name;
+        $this->nickname = $nickname;
 
         return $this;
     }
 
-    public function getFirstName(): ?string
+    public function getRoles(): array
     {
-        return $this->firstName;
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
-    public function setFirstName(string $firstName): static
+    public function eraseCredentials(): void
     {
-        $this->firstName = $firstName;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        $email = $this->getEmail();
+        if (empty($email)) {
+            throw new \UnexpectedValueException('');
+        }
+
+        return $email;
+    }
+
+    /**
+     * @return Collection<int, Widget>
+     */
+    public function getWidgets(): Collection
+    {
+        return $this->widgets;
+    }
+
+    public function addWidget(Widget $widget): static
+    {
+        if (!$this->widgets->contains($widget)) {
+            $this->widgets->add($widget);
+            $widget->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWidget(Widget $widget): static
+    {
+        if ($this->widgets->removeElement($widget) && $widget->getUser() === $this) {
+            $widget->setUser(null);
+        }
 
         return $this;
     }

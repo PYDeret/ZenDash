@@ -20,39 +20,23 @@
         <header>
             <nav class="blue darken-2 z-depth-2">
                 <div class="nav-wrapper">
-                    <a href="{{ path('app_home') }}" class="brand-logo">
-                        <i class="material-icons left">widgets</i>
+                    <span class="nav-user">
                         {{ 'label.website'|trans([], 'main') }}
-                    </a>
-                    <a href="#" data-target="mobile-menu" class="sidenav-trigger">
-                        <i class="material-icons">menu</i>
-                    </a>
-                    <ul class="right hide-on-med-and-down">
-                        {% if app.user %}
-                            <li class="nav-user">
-                                <i class="material-icons left">account_circle</i>
-                                {{ app.user.nickname ?? app.user.email }}
-                            </li>
-                            <li>
-                                <a href="{{ path('app_logout') }}" class="btn red lighten-1 waves-effect waves-light">
-                                    <i class="material-icons left">logout</i>
-                                    {{ 'label.create_account'|trans([], 'authentication') }}
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
+                    </span>
+                    {% if app.user %}
+                        <span class="nav-user">
+                            <i class="material-icons left">account_circle</i>
+                            {{ app.user.nickname ?? app.user.email }}
+                        </span>
+                        <span class="nav-user">
+                            <a href="{{ path('app_logout') }}" class="btn red lighten-1 waves-effect waves-light">
+                                <i class="material-icons left">logout</i>
+                                {{ 'label.create_account'|trans([], 'authentication') }}
+                            </a>
+                        </span>
+                    {% endif %}
                 </div>
             </nav>
-            <ul class="sidenav" id="mobile-menu">
-                {% if app.user %}
-                    <li class="user-view blue darken-2 white-text">
-                        <div class="name">
-                            {{ app.user.nickname ?? app.user.email }}
-                        </div>
-                    </li>
-                    <li><a href="{{ path('app_logout') }}" class="red-text"><i class="material-icons">logout</i>{{ 'label.create_account'|trans([], 'authentication') }}</a></li>
-                {% endif %}
-            </ul>
         </header>
         <main class="container section">
             {% block body %}{% endblock %}

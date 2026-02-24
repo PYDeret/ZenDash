@@ -51,27 +51,27 @@
         </div>
 
         <div id="register" class="col s12">
-            {{ form_start(registrationForm, {'attr': {'class': 'col s12'}}) }}
+            {{ form_start(registrationForm, {attr: {class: 'col s12'}}) }}
             <div class="form-container" style="padding: 20px;">
                 <h3 class="teal-text center">{{ 'label.create_account'|trans([], 'authentication') }}</h3>
 
                 <div class="row">
                     <div class="input-field col s12">
-                        {{ form_widget(registrationForm.email, {'attr': {'class': 'validate'}}) }}
+                        {{ form_widget(registrationForm.email, {attr: {class: 'validate'}}) }}
                         <label for="{{ registrationForm.email.vars.id }}">{{ 'label.email'|trans([], 'authentication') }}</label>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="input-field col s12">
-                        {{ form_widget(registrationForm.nickname, {'attr': {'class': 'validate'}}) }}
+                        {{ form_widget(registrationForm.nickname, {attr: {class: 'validate'}}) }}
                         <label for="{{ registrationForm.nickname.vars.id }}">{{ 'label.nickname'|trans([], 'authentication') }}</label>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="input-field col s12">
-                        {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'validate'}}) }}
+                        {{ form_widget(registrationForm.plainPassword, {attr: {class: 'validate'}}) }}
                         <label for="{{ registrationForm.plainPassword.vars.id }}">{{ 'label.password'|trans([], 'authentication') }}</label>
                     </div>
                 </div>

@@ -1,0 +1,9 @@
+{
+    "extends": "stylelint-config-standard-scss",
+    "rules": {
+        "scss/at-import-partial-extension": "always",
+        "no-duplicate-selectors": true,
+        "color-no-invalid-hex": true,
+        "indentation": 2
+    }
+}

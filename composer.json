@@ -91,10 +91,12 @@
         "fix": "php-cs-fixer fix",
         "stan": "phpstan analyse --memory-limit=512M",
         "tests": "APP_ENV=test php bin/phpunit --colors=always",
+        "lint:twig": "vendor/bin/twig-cs-fixer lint templates/",
         "qa": [
             "@fix",
             "@stan",
-            "@tests"
+            "@tests",
+            "@lint:twig"
         ]
     },
     "conflict": {
@@ -118,6 +120,7 @@
         "symfony/debug-bundle": "7.4.*",
         "symfony/maker-bundle": "^1.0",
         "symfony/stopwatch": "7.4.*",
-        "symfony/web-profiler-bundle": "7.4.*"
+        "symfony/web-profiler-bundle": "7.4.*",
+        "vincentlanglet/twig-cs-fixer": "^3.14"
     }
 }

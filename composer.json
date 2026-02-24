@@ -93,6 +93,7 @@
         "tests": "APP_ENV=test php bin/phpunit --colors=always",
         "lint:twig": "vendor/bin/twig-cs-fixer lint --fix",
         "lint:sass": "var/dart-sass/sass assets/styles:var/cache/sass_lint --no-source-map --stop-on-error --quiet-deps",
+        "compile": "php bin/console asset-map:compile",
         "qa": [
             "@fix",
             "@stan",

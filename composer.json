@@ -91,12 +91,14 @@
         "fix": "php-cs-fixer fix",
         "stan": "phpstan analyse --memory-limit=512M",
         "tests": "APP_ENV=test php bin/phpunit --colors=always",
-        "lint:twig": "vendor/bin/twig-cs-fixer lint templates/",
+        "lint:twig": "vendor/bin/twig-cs-fixer lint --fix",
+        "lint:sass": "var/dart-sass/sass assets/styles:var/cache/sass_lint --no-source-map --stop-on-error --quiet-deps",
         "qa": [
             "@fix",
             "@stan",
             "@tests",
-            "@lint:twig"
+            "@lint:twig",
+            "@lint:sass"
         ]
     },
     "conflict": {

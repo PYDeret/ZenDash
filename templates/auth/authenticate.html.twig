@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% set trans_domain = 'authentication' %}
-
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('styles/authentification/authentification.scss') }}">
@@ -11,10 +9,10 @@
     <div class="white z-depth-2" data-active-tab="{{ active_tab|default('login') }}">
         <ul class="tabs teal">
             <li class="tab col s6">
-                <a class="white-text" href="#login">{{ 'label.connect'|trans([], trans_domain) }}</a>
+                <a class="white-text" href="#login">{{ 'label.connect'|trans([], 'authentication') }}</a>
             </li>
             <li class="tab col s6">
-                <a class="white-text" href="#register">{{ 'label.create_account'|trans([], trans_domain) }}</a>
+                <a class="white-text" href="#register">{{ 'label.create_account'|trans([], 'authentication') }}</a>
             </li>
         </ul>
 
@@ -24,28 +22,28 @@
                 <div class="form-container" style="padding: 20px;">
                     {% if error %}
                         <div class="card-panel red darken-2 white-text">
-                            {{ 'error.invalid_credentials'|trans([], trans_domain) }}
+                            {{ 'error.invalid_credentials'|trans([], 'authentication') }}
                         </div>
                     {% endif %}
 
                     <div class="row">
                         <div class="input-field col s12">
                             <input type="email" value="{{ last_username }}" name="_username" id="username" class="validate" autocomplete="email" required autofocus>
-                            <label for="username">{{ 'label.email'|trans([], trans_domain) }}</label>
+                            <label for="username">{{ 'label.email'|trans([], 'authentication') }}</label>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="input-field col s12">
                             <input type="password" name="_password" id="password" class="validate" autocomplete="current-password" required>
-                            <label for="password">{{ 'label.password'|trans([], trans_domain) }}</label>
+                            <label for="password">{{ 'label.password'|trans([], 'authentication') }}</label>
                         </div>
                     </div>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                     <br>
                     <div style="text-align: center;">
                         <button class="btn waves-effect waves-light teal" type="submit">
-                            {{ 'label.connect'|trans([], trans_domain) }}
+                            {{ 'label.connect'|trans([], 'authentication') }}
                         </button>
                     </div>
                 </div>
@@ -55,26 +53,26 @@
         <div id="register" class="col s12">
             {{ form_start(registrationForm, {'attr': {'class': 'col s12'}}) }}
             <div class="form-container" style="padding: 20px;">
-                <h3 class="teal-text center">{{ 'label.create_account'|trans([], trans_domain) }}</h3>
+                <h3 class="teal-text center">{{ 'label.create_account'|trans([], 'authentication') }}</h3>
 
                 <div class="row">
                     <div class="input-field col s12">
                         {{ form_widget(registrationForm.email, {'attr': {'class': 'validate'}}) }}
-                        <label for="{{ registrationForm.email.vars.id }}">{{ 'label.email'|trans([], trans_domain) }}</label>
+                        <label for="{{ registrationForm.email.vars.id }}">{{ 'label.email'|trans([], 'authentication') }}</label>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="input-field col s12">
                         {{ form_widget(registrationForm.nickname, {'attr': {'class': 'validate'}}) }}
-                        <label for="{{ registrationForm.nickname.vars.id }}">{{ 'label.nickname'|trans([], trans_domain) }}</label>
+                        <label for="{{ registrationForm.nickname.vars.id }}">{{ 'label.nickname'|trans([], 'authentication') }}</label>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="input-field col s12">
                         {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'validate'}}) }}
-                        <label for="{{ registrationForm.plainPassword.vars.id }}">{{ 'label.password'|trans([], trans_domain) }}</label>
+                        <label for="{{ registrationForm.plainPassword.vars.id }}">{{ 'label.password'|trans([], 'authentication') }}</label>
                     </div>
                 </div>
 
@@ -82,7 +80,7 @@
                     <div class="col s12">
                         <label>
                             {{ form_widget(registrationForm.agreeTerms) }}
-                            <span>{{ 'label.accept_cgu'|trans([], trans_domain) }}</span>
+                            <span>{{ 'label.accept_cgu'|trans([], 'authentication') }}</span>
                         </label>
                         <div class="red-text" style="font-size: 0.8rem;">
                             {{ form_errors(registrationForm.agreeTerms) }}
@@ -92,7 +90,7 @@
 
                 <div style="text-align: center;">
                     <button class="btn waves-effect waves-light teal" type="submit">
-                        {{ 'label.register'|trans([], trans_domain) }}
+                        {{ 'label.register'|trans([], 'authentication') }}
                     </button>
                 </div>
             </div>

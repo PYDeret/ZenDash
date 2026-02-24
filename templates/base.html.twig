@@ -2,7 +2,7 @@
 <html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}ZenDash{% endblock %}</title>
+        <title>{% block title %}{{ 'label.website'|trans([], 'main') }}{% endblock %}</title>
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
@@ -22,7 +22,7 @@
                 <div class="nav-wrapper">
                     <a href="{{ path('app_home') }}" class="brand-logo">
                         <i class="material-icons left">widgets</i>
-                        ZenDash
+                        {{ 'label.website'|trans([], 'main') }}
                     </a>
                     <a href="#" data-target="mobile-menu" class="sidenav-trigger">
                         <i class="material-icons">menu</i>
@@ -36,7 +36,7 @@
                             <li>
                                 <a href="{{ path('app_logout') }}" class="btn red lighten-1 waves-effect waves-light">
                                     <i class="material-icons left">logout</i>
-                                    Logout
+                                    {{ 'label.create_account'|trans([], 'authentication') }}
                                 </a>
                             </li>
                         {% endif %}
@@ -50,8 +50,7 @@
                             {{ app.user.nickname ?? app.user.email }}
                         </div>
                     </li>
-                    <li><a href="{{ path('app_home') }}"><i class="material-icons">home</i>Accueil</a></li>
-                    <li><a href="{{ path('app_logout') }}" class="red-text"><i class="material-icons">logout</i>Logout</a></li>
+                    <li><a href="{{ path('app_logout') }}" class="red-text"><i class="material-icons">logout</i>{{ 'label.create_account'|trans([], 'authentication') }}</a></li>
                 {% endif %}
             </ul>
         </header>

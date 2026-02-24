@@ -3,12 +3,12 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('vendor/materialize-css/dist/css/materialize.min.css') }}">
+    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('styles/widget/widget.scss') }}">
 {% endblock %}
 
 {% block body %}
-    <div class="container">
+    <div>
         <h4>Mon Dashboard</h4>
 
         {# Bouton pour créer un nouveau widget #}
@@ -84,14 +84,4 @@
             <a href="#!" class="modal-close waves-effect waves-green btn-flat">Fermer</a>
         </div>
     </div>
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            M.Modal.init(document.querySelectorAll('.modal'));
-            M.FormSelect.init(document.querySelectorAll('select'));
-        });
-    </script>
 {% endblock %}

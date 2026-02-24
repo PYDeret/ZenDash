@@ -2,3 +2,5 @@ symfonycasts_sass:
     root_sass:
         - 'assets/styles/app.scss'
         - 'assets/styles/authentification/authentification.scss'
+        - 'assets/styles/widget/widget.scss'
+        - 'assets/styles/main/main.scss'

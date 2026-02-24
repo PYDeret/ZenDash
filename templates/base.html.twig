@@ -1,19 +1,60 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="light">
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Site 2 PY{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <title>{% block title %}{{ 'label.website'|trans([], 'main') }}{% endblock %}</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
         {% block stylesheets %}
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+            <link rel="stylesheet" href="{{ asset('vendor/materialize-css/dist/css/materialize.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('styles/main/main.scss') }}">
         {% endblock %}
 
         {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
+            {{ importmap('app') }}
         {% endblock %}
     </head>
-    <body>
-        <main class="container">
+    <body class="grey lighten-4">
+        <header>
+            <nav class="blue darken-2 z-depth-2">
+                <div class="nav-wrapper">
+                    <a href="{{ path('app_home') }}" class="brand-logo">
+                        <i class="material-icons left">widgets</i>
+                        {{ 'label.website'|trans([], 'main') }}
+                    </a>
+                    <a href="#" data-target="mobile-menu" class="sidenav-trigger">
+                        <i class="material-icons">menu</i>
+                    </a>
+                    <ul class="right hide-on-med-and-down">
+                        {% if app.user %}
+                            <li class="nav-user">
+                                <i class="material-icons left">account_circle</i>
+                                {{ app.user.nickname ?? app.user.email }}
+                            </li>
+                            <li>
+                                <a href="{{ path('app_logout') }}" class="btn red lighten-1 waves-effect waves-light">
+                                    <i class="material-icons left">logout</i>
+                                    {{ 'label.create_account'|trans([], 'authentication') }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+            <ul class="sidenav" id="mobile-menu">
+                {% if app.user %}
+                    <li class="user-view blue darken-2 white-text">
+                        <div class="name">
+                            {{ app.user.nickname ?? app.user.email }}
+                        </div>
+                    </li>
+                    <li><a href="{{ path('app_logout') }}" class="red-text"><i class="material-icons">logout</i>{{ 'label.create_account'|trans([], 'authentication') }}</a></li>
+                {% endif %}
+            </ul>
+        </header>
+        <main class="container section">
             {% block body %}{% endblock %}
         </main>
     </body>

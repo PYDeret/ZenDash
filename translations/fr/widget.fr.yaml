@@ -1,0 +1,11 @@
+label:
+    title: 'Titre'
+    type: 'Type de widget'
+    choose_type: 'Choisir un type'
+    create: 'Choisir un type'
+    submit: 'Créer'
+    close: 'Fermer'
+widget_type:
+    note: 'Note'
+    todo: 'À faire'
+    weather: 'Météo'

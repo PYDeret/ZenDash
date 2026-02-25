@@ -58,30 +58,5 @@
     </div>
 
     {# Modal pour créer un widget #}
-    <div id="create-widget-modal" class="modal">
-        <div class="modal-content">
-            <h5>Créer un widget</h5>
-            <form method="POST" action="">
-                <div class="input-field">
-                    <input id="title" name="title" type="text" required>
-                    <label for="title">Titre</label>
-                </div>
-
-                <div class="input-field">
-                    <select name="type" required>
-                        <option value="" disabled selected>Choisir un type</option>
-                        <option value="note">Note</option>
-                        <option value="todo">Todo</option>
-                        <option value="weather">Weather</option>
-                    </select>
-                    <label>Type de widget</label>
-                </div>
-
-                <button class="btn waves-effect waves-light" type="submit">Créer</button>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Fermer</a>
-        </div>
-    </div>
+    {{ include('home/widget/widgetForm.html.twig') }}
 {% endblock %}

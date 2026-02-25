@@ -9,3 +9,6 @@ widget_type:
     note: 'Note'
     todo: 'À faire'
     weather: 'Météo'
+error:
+    title: 'Le titre ne doît pas être vide.'
+    type: 'Le type ne doît pas être vide.'

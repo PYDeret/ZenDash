@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Enum\Widget\WidgetTypeEnum;
 use App\Repository\WidgetRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: WidgetRepository::class)]
@@ -18,9 +19,11 @@ class Widget
     #[ORM\Column]
     private ?int $id = null;
 
+    #[NotBlank(message: 'error.title')]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
+    #[NotBlank(message: 'error.type')]
     #[ORM\Column(enumType: WidgetTypeEnum::class)]
     private ?WidgetTypeEnum $type = null;
 

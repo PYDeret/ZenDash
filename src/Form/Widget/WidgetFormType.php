@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace App\Form\Widget;
 
-use App\Entity\User;
 use App\Entity\Widget;
 use App\Enum\Widget\WidgetTypeEnum;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @extends AbstractType<Widget>
+ */
 class WidgetFormType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -28,7 +27,7 @@ class WidgetFormType extends AbstractType
                 'label' => 'label.type',
                 'class' => WidgetTypeEnum::class,
                 'placeholder' => 'label.choose_type',
-                'choice_label' => fn (WidgetTypeEnum $choice) => 'widget_type.' . $choice->value,
+                'choice_label' => fn (WidgetTypeEnum $choice) => 'widget_type.'.$choice->value,
             ])
         ;
     }

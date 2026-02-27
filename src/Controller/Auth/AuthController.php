@@ -30,23 +30,27 @@ class AuthController extends AbstractController
     public function authenticate(Request $request): ?Response
     {
         if ($this->getUser()) {
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute(route: 'app_home');
         }
 
         $error = $this->authenticationUtils->getLastAuthenticationError();
         $lastUsername = $this->authenticationUtils->getLastUsername();
 
         $user = new User();
-        $registrationForm = $this->createForm(RegistrationFormType::class, $user);
-        $registrationForm->handleRequest($request);
+        $registrationForm = $this->createForm(type: RegistrationFormType::class, data: $user);
+        $registrationForm->handleRequest(request: $request);
 
         if ($registrationForm->isSubmitted() && $registrationForm->isValid()) {
-            $plainPassword = $registrationForm->get('plainPassword')->getData();
-            $user->setPassword($this->userPasswordHasher->hashPassword($user, $plainPassword));
-            $this->entityManager->persist($user);
+            $plainPassword = $registrationForm->get(name: 'plainPassword')->getData();
+            $user->setPassword(password: $this->userPasswordHasher->hashPassword(user: $user, plainPassword: $plainPassword));
+            $this->entityManager->persist(object: $user);
             $this->entityManager->flush();
 
-            return $this->security->login($user, LoginAuthenticator::class, 'main');
+            return $this->security->login(
+                user: $user,
+                authenticatorName: LoginAuthenticator::class,
+                firewallName: 'main'
+            );
         }
 
         $activeTab = 'login';
@@ -54,7 +58,7 @@ class AuthController extends AbstractController
             $activeTab = 'register';
         }
 
-        return $this->render('auth/authenticate.html.twig', [
+        return $this->render(view: 'auth/authenticate.html.twig', parameters: [
             'registrationForm' => $registrationForm,
             'lastUsername' => $lastUsername,
             'error' => $error,

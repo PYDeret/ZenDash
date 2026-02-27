@@ -22,17 +22,17 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email')
-            ->add('nickname', TextType::class, [
+            ->add(child: 'email')
+            ->add(child: 'nickname', type: TextType::class, options: [
                 'label' => 'label.nickname',
             ])
-            ->add('agreeTerms', CheckboxType::class, [
+            ->add(child: 'agreeTerms', type: CheckboxType::class, options: [
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue(message: 'error.must_accept_cgu'),
                 ],
             ])
-            ->add('plainPassword', PasswordType::class, [
+            ->add(child: 'plainPassword', type: PasswordType::class, options: [
                 'mapped' => false,
                 'label' => 'label.password',
                 'attr' => ['autocomplete' => 'new-password'],
@@ -45,7 +45,7 @@ class RegistrationFormType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(defaults: [
             'data_class' => User::class,
             'translation_domain' => 'authentication',
         ]);

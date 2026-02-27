@@ -39,15 +39,18 @@ class RegistrationControllerTest extends WebTestCase
 
     public function testRegister(): void
     {
-        $this->client->request('GET', '/authenticate');
+        $this->client->request(method: 'GET', uri: '/authenticate');
         self::assertResponseIsSuccessful();
 
-        $this->client->submitForm($this->translator->trans('label.register', [], 'authentication'), [
-            'registration_form[email]' => 'newuser@example.com',
-            'registration_form[nickname]' => 'newbie',
-            'registration_form[plainPassword]' => 'password123',
-            'registration_form[agreeTerms]' => true,
-        ]);
+        $this->client->submitForm(
+            button: $this->translator->trans(id: 'label.register', domain: 'authentication'),
+            fieldValues: [
+                'registration_form[email]' => 'newuser@example.com',
+                'registration_form[nickname]' => 'newbie',
+                'registration_form[plainPassword]' => 'password123',
+                'registration_form[agreeTerms]' => true,
+            ]
+        );
 
         self::assertResponseRedirects('/home');
         self::assertCount(1, $this->userRepository->findAll());

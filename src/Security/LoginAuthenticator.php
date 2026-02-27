@@ -32,27 +32,27 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $email = $request->request->get('_username', '');
+        $email = $request->request->get(key: '_username', default: '');
         if (!is_string($email)) {
-            throw new \InvalidArgumentException($this->translator->trans('error.email_type', [], 'authentication'));
+            throw new \InvalidArgumentException(message: $this->translator->trans(id: 'error.email_type', domain: 'authentication'));
         }
 
-        $password = $request->request->get('_password', '');
+        $password = $request->request->get(key: '_password', default: '');
         if (!is_string($password)) {
-            throw new \InvalidArgumentException($this->translator->trans('error.password_type', [], 'authentication'));
+            throw new \InvalidArgumentException(message: $this->translator->trans(id: 'error.password_type', domain: 'authentication'));
         }
 
-        $csrfToken = $request->request->get('_csrf_token');
+        $csrfToken = $request->request->get(key: '_csrf_token');
         if (!is_string($csrfToken)) {
-            throw new \InvalidArgumentException($this->translator->trans('error.csrf_type', [], 'authentication'));
+            throw new \InvalidArgumentException(message: $this->translator->trans(id: 'error.csrf_type', domain: 'authentication'));
         }
 
-        $request->getSession()->set('_security.last_username', $email);
+        $request->getSession()->set(name: '_security.last_username', value: $email);
 
         return new Passport(
-            new UserBadge($email),
-            new PasswordCredentials($password),
-            [
+            userBadge: new UserBadge($email),
+            credentials: new PasswordCredentials($password),
+            badges: [
                 new CsrfTokenBadge('authenticate', $csrfToken),
                 new RememberMeBadge(),
             ]
@@ -61,20 +61,20 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
-            return new RedirectResponse($targetPath);
+        if ($targetPath = $this->getTargetPath(session: $request->getSession(), firewallName: $firewallName)) {
+            return new RedirectResponse(url: $targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('app_home'));
+        return new RedirectResponse(url: $this->urlGenerator->generate(name: 'app_home'));
     }
 
     protected function getLoginUrl(Request $request): string
     {
-        return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+        return $this->urlGenerator->generate(name: self::LOGIN_ROUTE);
     }
 
     public function supports(Request $request): bool
     {
-        return self::LOGIN_ROUTE === $request->attributes->get('_route') && $request->isMethod('POST') && $request->request->has('_username');
+        return self::LOGIN_ROUTE === $request->attributes->get(key: '_route') && $request->isMethod(method: 'POST') && $request->request->has(key: '_username');
     }
 }

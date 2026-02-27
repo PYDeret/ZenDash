@@ -107,7 +107,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $email = $this->getEmail();
         if (empty($email)) {
-            throw new \UnexpectedValueException('');
+            throw new \UnexpectedValueException(message: '');
         }
 
         return $email;
@@ -125,7 +125,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->widgets->contains($widget)) {
             $this->widgets->add($widget);
-            $widget->setUser($this);
+            $widget->setUser(user: $this);
         }
 
         return $this;
@@ -134,7 +134,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeWidget(Widget $widget): static
     {
         if ($this->widgets->removeElement($widget) && $widget->getUser() === $this) {
-            $widget->setUser(null);
+            $widget->setUser(user: null);
         }
 
         return $this;

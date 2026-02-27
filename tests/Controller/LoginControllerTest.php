@@ -19,8 +19,8 @@ class LoginControllerTest extends WebTestCase
     {
         $this->client = static::createClient();
         $container = static::getContainer();
-        $em = $container->get('doctrine.orm.entity_manager');
-        $this->translator = $container->get(TranslatorInterface::class);
+        $em = $container->get(id: 'doctrine.orm.entity_manager');
+        $this->translator = $container->get(id: TranslatorInterface::class);
         $userRepository = $em->getRepository(User::class);
 
         foreach ($userRepository->findAll() as $user) {
@@ -30,10 +30,19 @@ class LoginControllerTest extends WebTestCase
         $em->flush();
 
         /** @var UserPasswordHasherInterface $passwordHasher */
-        $passwordHasher = $container->get('security.user_password_hasher');
+        $passwordHasher = $container->get(id: 'security.user_password_hasher');
 
-        $user = (new User())->setEmail('me@example.com')->setNickname('randomNickname');
-        $user->setPassword($passwordHasher->hashPassword($user, 'password'));
+        $user = (new User())
+            ->setEmail(email: 'me@example.com')
+            ->setNickname(nickname: 'randomNickname')
+        ;
+
+        $user->setPassword(
+            password: $passwordHasher->hashPassword(
+                user: $user,
+                plainPassword: 'password'
+            )
+        );
 
         $em->persist($user);
         $em->flush();
@@ -41,28 +50,32 @@ class LoginControllerTest extends WebTestCase
 
     public function testLogin(): void
     {
-        $this->client->request('GET', '/authenticate');
+        $this->client->request(method: 'GET', uri: '/authenticate');
         self::assertResponseIsSuccessful();
 
-        $this->client->submitForm($this->translator->trans('label.connect', [], 'authentication'), [
-            '_username' => 'doesNotExist@example.com',
-            '_password' => 'password',
-        ]);
+        $this->client->submitForm(
+            button: $this->translator->trans(id: 'label.connect', domain: 'authentication'),
+            fieldValues: [
+                '_username' => 'doesNotExist@example.com',
+                '_password' => 'password',
+            ]
+        );
 
         self::assertResponseRedirects('/authenticate');
         $this->client->followRedirect();
+        self::assertSelectorTextContains('.card-panel.red', $this->translator->trans(id: 'error.invalid_credentials', domain: 'authentication'));
 
-        self::assertSelectorTextContains('.card-panel.red', $this->translator->trans('error.invalid_credentials', [], 'authentication'));
+        $this->client->request(method: 'GET', uri: '/authenticate');
+        $this->client->submitForm(
+            button: $this->translator->trans(id: 'label.connect', domain: 'authentication'),
+            fieldValues: [
+                '_username' => 'me@example.com',
+                '_password' => 'password',
+            ]
+        );
 
-        $this->client->request('GET', '/authenticate');
-        $this->client->submitForm($this->translator->trans('label.connect', [], 'authentication'), [
-            '_username' => 'me@example.com',
-            '_password' => 'password',
-        ]);
-
-        self::assertResponseRedirects('/home');
+        self::assertResponseRedirects(expectedLocation: '/home');
         $this->client->followRedirect();
-
-        self::assertSelectorNotExists('.card-panel.red');
+        self::assertSelectorNotExists(selector: '.card-panel.red');
     }
 }

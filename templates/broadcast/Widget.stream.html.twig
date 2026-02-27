@@ -1,0 +1,7 @@
+{% block create %}
+    <turbo-stream action="append" target="widgets-container">
+        <template>
+            {{ include('home/widget/widgetCard.html.twig', _context) }}
+        </template>
+    </turbo-stream>
+{% endblock %}

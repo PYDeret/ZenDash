@@ -4,34 +4,63 @@ import './styles/app.css';
 
 window.M = M;
 
-function initMaterialize() {
-    M.AutoInit();
-    M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'), {
-        constrainWidth: false,
-        coverTrigger: false
-    });
+function initMaterialize(rootElement = document) {
+    document.querySelectorAll('.lean-overlay, .modal-overlay').forEach(el => el.remove());
+    M.AutoInit(rootElement);
+
+    const dropdowns = rootElement.querySelectorAll('.dropdown-trigger');
+    if (dropdowns.length > 0) {
+        M.Dropdown.init(dropdowns, {
+            constrainWidth: false,
+            coverTrigger: false
+        });
+    }
 }
 
-document.addEventListener('turbo:load', initMaterialize);
+document.addEventListener('turbo:load', () => {
+    initMaterialize();
+});
 
 document.addEventListener('turbo:submit-end', (event) => {
-    if (event.detail.fetchResponse.response.status === 422) {
-        console.log('adazffaf');
+    const response = event.detail.fetchResponse.response;
+    if (response.status === 422) {
         window.hasFormError = true;
+    }
+
+    if (response.ok && response.status === 200) {
+        const modalElem = document.querySelector('#create-widget-modal');
+        const instance = M.Modal.getInstance(modalElem);
+        if (instance) {
+            instance.close();
+        }
+
+        const form = document.querySelector('#create-widget-form-element');
+        if (form) {
+            form.reset();
+            M.updateTextFields();
+        }
+
+        window.hasFormError = false;
     }
 });
 
 document.addEventListener('turbo:render', () => {
     if (window.hasFormError) {
-        console.log('adazd');
         const modalElem = document.querySelector('#create-widget-modal');
         if (modalElem) {
             const instance = M.Modal.init(modalElem);
             instance.open();
             M.updateTextFields();
-            M.FormSelect.init(modalElem.querySelectorAll('select'));
         }
 
         window.hasFormError = false;
     }
+});
+
+document.addEventListener('turbo:before-stream-render', (event) => {
+    const fallback = event.target;
+
+    setTimeout(() => {
+        initMaterialize(document.getElementById('widgets-container'));
+    }, 0);
 });

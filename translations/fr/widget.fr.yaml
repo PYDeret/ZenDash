@@ -5,6 +5,8 @@ label:
     create: 'Choisir un type'
     submit: 'Créer'
     close: 'Fermer'
+    my_dashboard: 'Mon dashboard'
+    add: 'Ajouter un widget'
 widget_type:
     note: 'Note'
     todo: 'À faire'

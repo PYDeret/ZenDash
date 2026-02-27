@@ -1,7 +1,14 @@
 <div id="create-widget-modal" class="modal">
     <div class="modal-content">
         <h5>{{ 'label.create'|trans([], 'widget') }}</h5>
-        {{ form_start(widgetForm, {attr: {class: 'col s12', novalidate: 'novalidate'}}) }}
+        {{ form_start(widgetForm, {
+            attr: {
+                class: 'col s12',
+                novalidate: 'novalidate',
+                'data-controller': 'modal-form',
+                id: 'create-widget-form-element'
+            }})
+        }}
         <div class="form-container">
             <div class="row">
                 <div class="input-field col s12">
@@ -35,6 +42,6 @@
         {{ form_end(widgetForm) }}
     </div>
     <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat">{{ 'label.close'|trans([], 'widget') }}</a>
+        <a href="#!" data-turbo="false" class="modal-close waves-effect waves-green btn-flat">{{ 'label.close'|trans([], 'widget') }}</a>
     </div>
 </div>

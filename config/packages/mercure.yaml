@@ -6,3 +6,12 @@ mercure:
             jwt:
                 secret: '%env(MERCURE_JWT_SECRET)%'
                 publish: '*'
+
+when@test:
+    mercure:
+        hubs:
+            default:
+                url: 'http://null/.well-known/mercure'
+                jwt:
+                    secret: 'a-fake-secret-a-fake-secret-a-fake-secret-a-fake-secret'
+                    publish: ['*']

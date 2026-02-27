@@ -30,7 +30,7 @@ class WidgetRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
         ;
 
-        return $position === null ? 1 : $position + 1;
+        return $position === null ? 1 : (int) $position + 1;
     }
 
     //    /**

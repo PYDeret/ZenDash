@@ -1,0 +1,30 @@
+<div class="col s12 m6 l4">
+    <div class="card widget widget--{{ widget.type.value }}">
+        <div class="card-content">
+            <span class="card-title">{{ widget.title }}</span>
+
+            {% if widget.content %}
+                {% if widget.type.value == 'note' %}
+                    <p class="note-text">{{ widget.content.text }}</p>
+                {% elseif widget.type.value == 'todo' %}
+                    <ul class="collection">
+                        {% for item in widget.content %}
+                            <li class="collection-item">
+                                <label>
+                                    <input type="checkbox" {{ item.done ? 'checked' }}>
+                                    <span class="{{ item.done ? 'todo-done' }}">{{ item.task }}</span>
+                                </label>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% elseif widget.type.value == 'weather' %}
+                    <div class="center-align">
+                        <div class="weather-icon">☀️</div>
+                        <div class="weather-temp">{{ widget.content.temp }}°C</div>
+                        <div class="weather-city">{{ widget.content.city }}</div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>

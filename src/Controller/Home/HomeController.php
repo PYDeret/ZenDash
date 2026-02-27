@@ -7,18 +7,19 @@ namespace App\Controller\Home;
 use App\Entity\User;
 use App\Entity\Widget;
 use App\Form\Widget\WidgetFormType;
-use App\Repository\WidgetRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\UX\Turbo\TurboBundle;
 
 final class HomeController extends AbstractController
 {
     public function __construct(private readonly EntityManagerInterface $entityManager)
-    {}
+    {
+    }
 
     #[IsGranted('ROLE_USER')]
     #[Route('/home', name: 'app_home', methods: ['GET', 'POST'])]
@@ -35,6 +36,12 @@ final class HomeController extends AbstractController
             $widget->setPosition($widgetRepository->findLastestPositionByUser($user));
             $this->entityManager->persist($widget);
             $this->entityManager->flush();
+
+            if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
+                return $this->render('broadcast/Widget.stream.html.twig', [
+                    'widget' => $widget,
+                ], new Response('', 200, ['Content-Type' => TurboBundle::STREAM_MEDIA_TYPE]));
+            }
 
             return $this->redirectToRoute('app_home');
         }

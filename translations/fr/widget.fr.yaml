@@ -1,0 +1,13 @@
+label:
+    title: 'Titre'
+    type: 'Type de widget'
+    choose_type: 'Choisir un type'
+    create: 'Choisir un type'
+    submit: 'Créer'
+    close: 'Fermer'
+    my_dashboard: 'Mon dashboard'
+    add: 'Ajouter un widget'
+widget_type:
+    note: 'Note'
+    todo: 'À faire'
+    weather: 'Météo'

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Auth;
 
 use App\Entity\User;
-use App\Form\RegistrationFormType;
+use App\Form\Auth\RegistrationFormType;
 use App\Security\LoginAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -56,9 +56,9 @@ class AuthController extends AbstractController
 
         return $this->render('auth/authenticate.html.twig', [
             'registrationForm' => $registrationForm,
-            'last_username' => $lastUsername,
+            'lastUsername' => $lastUsername,
             'error' => $error,
-            'active_tab' => $activeTab,
+            'activeTab' => $activeTab,
         ]);
     }
 }

@@ -186,6 +186,7 @@
     </PhpStan_settings>
   </component>
   <component name="PhpStanOptionsConfiguration">
+    <option name="memoryLimit" value="512M" />
     <option name="transferred" value="true" />
   </component>
   <component name="PhpUnit">

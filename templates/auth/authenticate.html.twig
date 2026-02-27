@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="white z-depth-2" data-active-tab="{{ active_tab|default('login') }}">
+    <div class="white z-depth-2" data-active-tab="{{ activeTab|default('login') }}">
         <ul class="tabs teal">
             <li class="tab col s6">
                 <a class="white-text" href="#login">{{ 'label.connect'|trans([], 'authentication') }}</a>
@@ -28,7 +28,7 @@
 
                     <div class="row">
                         <div class="input-field col s12">
-                            <input type="email" value="{{ last_username }}" name="_username" id="username" class="validate" autocomplete="email" required autofocus>
+                            <input type="email" value="{{ lastUsername }}" name="_username" id="username" class="validate" autocomplete="email" required autofocus>
                             <label for="username">{{ 'label.email'|trans([], 'authentication') }}</label>
                         </div>
                     </div>

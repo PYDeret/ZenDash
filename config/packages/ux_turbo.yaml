@@ -2,3 +2,13 @@
 framework:
     csrf_protection:
         check_header: true
+
+turbo:
+    broadcast: ~
+
+when@test:
+    turbo:
+        broadcast:
+            enabled: true
+            doctrine_orm:
+                enabled: false

@@ -20,10 +20,10 @@ class WidgetFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title', TextType::class, [
+            ->add(child: 'title', type: TextType::class, options: [
                 'label' => 'label.title',
             ])
-            ->add('type', EnumType::class, [
+            ->add(child: 'type', type: EnumType::class, options: [
                 'label' => 'label.type',
                 'class' => WidgetTypeEnum::class,
                 'placeholder' => 'label.choose_type',
@@ -34,7 +34,7 @@ class WidgetFormType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(defaults: [
             'data_class' => Widget::class,
             'translation_domain' => 'widget',
         ]);

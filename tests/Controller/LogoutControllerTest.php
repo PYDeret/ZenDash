@@ -19,17 +19,17 @@ class LogoutControllerTest extends WebTestCase
     {
         $this->client = static::createClient();
         $container = static::getContainer();
-        $this->userRepository = $container->get(UserRepository::class);
+        $this->userRepository = $container->get(id: UserRepository::class);
 
-        $em = $container->get('doctrine.orm.entity_manager');
+        $em = $container->get(id: 'doctrine.orm.entity_manager');
         foreach ($this->userRepository->findAll() as $u) {
             $em->remove($u);
         }
 
         $user = (new User())
-            ->setEmail('test-logout@example.com')
-            ->setNickname('LogoutTester')
-            ->setPassword('password');
+            ->setEmail(email: 'test-logout@example.com')
+            ->setNickname(nickname: 'LogoutTester')
+            ->setPassword(password: 'password');
 
         $em->persist($user);
         $em->flush();
@@ -39,10 +39,11 @@ class LogoutControllerTest extends WebTestCase
     {
         $testUser = $this->userRepository->findOneByEmail('test-logout@example.com');
         self::assertInstanceOf(User::class, $testUser);
-        $this->client->loginUser($testUser);
-        $this->client->request('GET', '/logout');
+        $this->client->loginUser(user: $testUser);
+        $this->client->request(method: 'GET', uri: '/logout');
 
         self::assertResponseRedirects('/authenticate', Response::HTTP_SEE_OTHER);
+
         $this->client->followRedirect();
     }
 }

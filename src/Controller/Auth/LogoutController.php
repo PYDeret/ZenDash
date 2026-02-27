@@ -11,6 +11,6 @@ class LogoutController
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {
-        throw new \LogicException('');
+        throw new \LogicException(message: '');
     }
 }

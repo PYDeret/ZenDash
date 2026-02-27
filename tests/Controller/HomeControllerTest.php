@@ -24,7 +24,7 @@ final class HomeControllerTest extends WebTestCase
     {
         $this->client = self::createClient();
         $this->container = self::getContainer();
-        $em = $this->container->get('doctrine.orm.entity_manager');
+        $em = $this->container->get(id: 'doctrine.orm.entity_manager');
         $userRepository = $em->getRepository(User::class);
         foreach ($userRepository->findAll() as $user) {
             $em->remove($user);
@@ -33,10 +33,19 @@ final class HomeControllerTest extends WebTestCase
         $em->flush();
 
         /** @var UserPasswordHasherInterface $passwordHasher */
-        $passwordHasher = $this->container->get('security.user_password_hasher');
+        $passwordHasher = $this->container->get(id: 'security.user_password_hasher');
 
-        $user = (new User())->setEmail('me@example.com')->setNickname('randomNickname');
-        $user->setPassword($passwordHasher->hashPassword($user, 'password'));
+        $user = (new User())
+            ->setEmail(email: 'me@example.com')
+            ->setNickname(nickname: 'randomNickname')
+        ;
+
+        $user->setPassword(
+            password: $passwordHasher->hashPassword(
+                user: $user,
+                plainPassword: 'password'
+            )
+        );
 
         $em->persist($user);
         $em->flush();
@@ -47,8 +56,8 @@ final class HomeControllerTest extends WebTestCase
         $user = $this->container->get(UserRepository::class)->findOneByEmail('me@example.com');
         self::assertNotNull($user);
 
-        $this->client->loginUser($user);
-        $this->client->request('GET', '/home');
+        $this->client->loginUser(user: $user);
+        $this->client->request(method: 'GET', uri: '/home');
         self::assertResponseIsSuccessful();
     }
 
@@ -57,27 +66,26 @@ final class HomeControllerTest extends WebTestCase
         $user = $this->container->get(UserRepository::class)->findOneByEmail('me@example.com');
         self::assertNotNull($user);
 
-        $this->client->loginUser($user);
-
-        $crawler = $this->client->request('GET', '/home');
-        $form = $crawler->filter('#create-widget-form-element')->form([
+        $this->client->loginUser(user: $user);
+        $crawler = $this->client->request(method: 'GET', uri: '/home');
+        $form = $crawler->filter(selector: '#create-widget-form-element')->form(values: [
             'widget_form[title]' => self::WIDGET_NAME,
             'widget_form[type]' => 'note',
         ]);
 
-        $this->client->submit($form, [], [
-            'HTTP_ACCEPT' => TurboBundle::STREAM_MEDIA_TYPE,
-            'QUERY_STRING' => '_format='.TurboBundle::STREAM_FORMAT,
-        ]);
+        $this->client->submit(
+            form: $form,
+            serverParameters: [
+                'HTTP_ACCEPT' => TurboBundle::STREAM_MEDIA_TYPE,
+                'QUERY_STRING' => '_format='.TurboBundle::STREAM_FORMAT,
+            ]
+        );
 
         self::assertResponseIsSuccessful();
-        self::assertResponseHeaderSame(
-            'Content-Type',
-            TurboBundle::STREAM_MEDIA_TYPE.'; charset=UTF-8'
-        );
-        self::assertSelectorExists('turbo-stream');
+        self::assertResponseHeaderSame('Content-Type', TurboBundle::STREAM_MEDIA_TYPE.'; charset=UTF-8');
 
-        $em = $this->container->get('doctrine.orm.entity_manager');
+        self::assertSelectorExists(selector: 'turbo-stream');
+        $em = $this->container->get(id: 'doctrine.orm.entity_manager');
         $widget = $em->getRepository(Widget::class)->findOneBy(['title' => self::WIDGET_NAME]);
 
         self::assertNotNull($widget);

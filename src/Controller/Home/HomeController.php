@@ -28,27 +28,35 @@ final class HomeController extends AbstractController
         $user = $this->getUser();
         $widgetRepository = $this->entityManager->getRepository(Widget::class);
         $widget = new Widget();
-        $widgetForm = $this->createForm(WidgetFormType::class, $widget);
-        $widgetForm->handleRequest($request);
+        $widgetForm = $this->createForm(type: WidgetFormType::class, data: $widget);
+        $widgetForm->handleRequest(request: $request);
 
         if ($user instanceof User && $widgetForm->isSubmitted() && $widgetForm->isValid()) {
-            $widget->setUser($user);
-            $widget->setPosition($widgetRepository->findLastestPositionByUser($user));
+            $widget->setUser(user: $user);
+            $widget->setPosition(position: $widgetRepository->findLastestPositionByUser(user: $user));
             $this->entityManager->persist($widget);
             $this->entityManager->flush();
 
             if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
-                return $this->render('broadcast/Widget.stream.html.twig', [
-                    'widget' => $widget,
-                ], new Response('', 200, ['Content-Type' => TurboBundle::STREAM_MEDIA_TYPE]));
+                return $this->render(
+                    view: 'broadcast/Widget.stream.html.twig',
+                    parameters: [
+                        'widget' => $widget,
+                    ],
+                    response: new Response(content: '', status: 200, headers: ['Content-Type' => TurboBundle::STREAM_MEDIA_TYPE])
+                );
             }
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute(route: 'app_home');
         }
 
-        return $this->render('home/index.html.twig', [
-            'widgetForm' => $widgetForm,
-            'widgets' => $widgetRepository->findBy(['user' => $user]),
-        ], new Response(null, $widgetForm->isSubmitted() ? 422 : 200));
+        return $this->render(
+            view: 'home/index.html.twig',
+            parameters: [
+                'widgetForm' => $widgetForm,
+                'widgets' => $widgetRepository->findBy(['user' => $user]),
+            ],
+            response: new Response(content: null, status: $widgetForm->isSubmitted() ? 422 : 200)
+        );
     }
 }

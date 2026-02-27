@@ -10,7 +10,7 @@
                     {% if widgetForm.title.vars.errors|length > 0 %}
                         <span class="helper-text red-text">
                             {% for error in widgetForm.title.vars.errors %}
-                                {{ error.message|trans({}, 'widget') }}
+                                {{ error.message }}
                             {% endfor %}
                         </span>
                     {% endif %}
@@ -24,7 +24,7 @@
                     {% if widgetForm.type.vars.errors|length > 0 %}
                         <span class="helper-text red-text">
                             {% for error in widgetForm.type.vars.errors %}
-                                {{ error.message|trans({}, 'widget') }}
+                                {{ error.message }}
                             {% endfor %}
                         </span>
                     {% endif %}

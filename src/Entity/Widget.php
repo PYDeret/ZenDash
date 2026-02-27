@@ -19,11 +19,11 @@ class Widget
     #[ORM\Column]
     private ?int $id = null;
 
-    #[NotBlank(message: 'error.title')]
+    #[NotBlank(message: 'widget.title')]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[NotBlank(message: 'error.type')]
+    #[NotBlank(message: 'widget.type')]
     #[ORM\Column(enumType: WidgetTypeEnum::class)]
     private ?WidgetTypeEnum $type = null;
 

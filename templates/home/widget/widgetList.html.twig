@@ -2,6 +2,6 @@
     {% for widget in widgets|default([]) %}
         {{ include('home/widget/widgetCard.html.twig', {widget: widget}) }}
     {% else %}
-        <p id="no-widget-message">Aucun widget pour le moment.</p>
+        <p id="no-widget-message">{{ 'label.no_widget'|trans([], 'widget') }}</p>
     {% endfor %}
 </div>

@@ -21,8 +21,8 @@ final class HomeController extends AbstractController
     {
     }
 
-    #[IsGranted('ROLE_USER')]
-    #[Route('/home', name: 'app_home', methods: ['GET', 'POST'])]
+    #[IsGranted(attribute: 'ROLE_USER')]
+    #[Route(path: '/home', name: 'app_home', methods: ['GET', 'POST'])]
     public function index(Request $request): Response
     {
         $user = $this->getUser();
@@ -39,7 +39,7 @@ final class HomeController extends AbstractController
 
             if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
                 return $this->render(
-                    view: 'broadcast/Widget.stream.html.twig',
+                    view: 'broadcast/Widget/Widget.stream.html.twig',
                     parameters: [
                         'widget' => $widget,
                     ],

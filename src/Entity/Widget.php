@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: WidgetRepository::class)]
-#[Broadcast]
+#[Broadcast(template: 'broadcast/Widget/Widget.stream.html.twig')]
 class Widget
 {
     #[ORM\Id]

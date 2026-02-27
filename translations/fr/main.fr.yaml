@@ -1,2 +1,4 @@
 label:
     website: 'ZenDash'
+error:
+    wrong_call: 'Ressource inaccessible'

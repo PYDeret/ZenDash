@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}{{ 'label.my_dashboard'|trans([], 'widget') }}{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -11,7 +11,6 @@
     <div>
         <h4>{{ 'label.my_dashboard'|trans([], 'widget') }}</h4>
 
-        {# Bouton pour créer un nouveau widget #}
         <div class="right-align" style="margin-bottom: 20px;">
             <button data-target="create-widget-modal" class="btn waves-effect waves-light modal-trigger">
                 {{ 'label.add'|trans([], 'widget') }}

@@ -26,7 +26,7 @@ class AuthController extends AbstractController
     ) {
     }
 
-    #[Route('/authenticate', name: 'app_auth')]
+    #[Route(path: '/authenticate', name: 'app_auth')]
     public function authenticate(Request $request): ?Response
     {
         if ($this->getUser()) {

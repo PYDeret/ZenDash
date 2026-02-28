@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Controller;
+namespace App\Tests\Controller\Auth;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;

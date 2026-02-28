@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Controller;
+namespace App\Tests\Controller\Auth;
 
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;

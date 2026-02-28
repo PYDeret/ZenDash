@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Controller;
+namespace App\Tests\Controller\Widget;
 
 use App\Entity\User;
 use App\Entity\Widget;
@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\UX\Turbo\TurboBundle;
 
-final class HomeControllerTest extends WebTestCase
+final class WidgetCreateControllerTest extends WebTestCase
 {
     private const WIDGET_NAME = 'Test Widget';
 
@@ -49,16 +49,6 @@ final class HomeControllerTest extends WebTestCase
 
         $em->persist($user);
         $em->flush();
-    }
-
-    public function testIndex(): void
-    {
-        $user = $this->container->get(UserRepository::class)->findOneByEmail('me@example.com');
-        self::assertNotNull($user);
-
-        $this->client->loginUser(user: $user);
-        $this->client->request(method: 'GET', uri: '/home');
-        self::assertResponseIsSuccessful();
     }
 
     public function testAddWidgetViaTurboStream(): void

@@ -11,15 +11,15 @@
     <div>
         <h4>{{ 'label.my_dashboard'|trans([], 'widget') }}</h4>
 
-        <div class="right-align" style="margin-bottom: 20px;">
-            <button data-target="create-widget-modal" class="btn waves-effect waves-light modal-trigger">
-                {{ 'label.add'|trans([], 'widget') }}
-            </button>
-        </div>
+        <a href="{{ path('widget_init') }}"
+           data-turbo-prefetch="false"
+           data-turbo-frame="widget_modal_frame"
+           class="btn modal-trigger">
+            {{ 'label.add'|trans([], 'widget') }}
+        </a>
 
         {{ include('home/widget/widgetList.html.twig') }}
     </div>
 
-    {# Modal pour créer un widget #}
-    {{ include('home/widget/widgetForm.html.twig') }}
+    <turbo-frame id="widget_modal_frame"></turbo-frame>
 {% endblock %}

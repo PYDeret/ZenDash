@@ -1,47 +1,17 @@
-<div id="create-widget-modal" class="modal">
-    <div class="modal-content">
-        <h5>{{ 'label.create'|trans([], 'widget') }}</h5>
-        {{ form_start(widgetForm, {
-            attr: {
-                class: 'col s12',
-                novalidate: 'novalidate',
-                'data-controller': 'modal-form',
-                id: 'create-widget-form-element'
-            }})
-        }}
-        <div class="form-container">
-            <div class="row">
-                <div class="input-field col s12">
-                    {{ form_widget(widgetForm.title, {attr: {class: 'validate'}}) }}
-                    <label for="{{ widgetForm.title.vars.id }}">{{ 'label.title'|trans([], 'widget') }}</label>
-                    {% if widgetForm.title.vars.errors|length > 0 %}
-                        <span class="helper-text red-text">
-                            {% for error in widgetForm.title.vars.errors %}
-                                {{ error.message }}
-                            {% endfor %}
-                        </span>
-                    {% endif %}
-                </div>
-            </div>
+<turbo-frame id="widget_modal_frame">
+    <div id="create-widget-modal" class="modal" data-controller="modal-form">
+        <div class="modal-content">
+            <h5>{{ 'label.create'|trans([], 'widget') }}</h5>
 
-            <div class="row">
-                <div class="input-field col s12">
-                    {{ form_widget(widgetForm.type, {attr: {class: 'validate'}}) }}
-                    <label>{{ 'label.type'|trans([], 'widget') }}</label>
-                    {% if widgetForm.type.vars.errors|length > 0 %}
-                        <span class="helper-text red-text">
-                            {% for error in widgetForm.type.vars.errors %}
-                                {{ error.message }}
-                            {% endfor %}
-                        </span>
-                    {% endif %}
-                </div>
-            </div>
+            <turbo-frame id="widget_form_frame">
+                {{ include('home/widget/widgetFormInner.html.twig') }}
+            </turbo-frame>
         </div>
-        <button class="btn waves-effect waves-light" type="submit">{{ 'label.submit'|trans([], 'widget') }}</button>
-        {{ form_end(widgetForm) }}
+
+        <div class="modal-footer">
+            <a href="#!" class="modal-close btn-flat">
+                {{ 'label.close'|trans([], 'widget') }}
+            </a>
+        </div>
     </div>
-    <div class="modal-footer">
-        <a href="#!" data-turbo="false" class="modal-close waves-effect waves-green btn-flat">{{ 'label.close'|trans([], 'widget') }}</a>
-    </div>
-</div>
+</turbo-frame>

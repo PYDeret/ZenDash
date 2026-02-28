@@ -162,6 +162,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/common" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/fresh/doctrine-enum-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/vincentlanglet/twig-cs-fixer" />
+      <excludeFolder url="file://$MODULE_DIR$/public/assets" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

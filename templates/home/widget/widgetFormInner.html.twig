@@ -1,0 +1,43 @@
+{{
+    form_start(widgetForm, {
+        attr: {
+            class: 'col s12',
+            novalidate: 'novalidate',
+            id: 'create-widget-form-element',
+            'data-turbo-frame': 'widget_form_frame'
+        },
+        action: path('widget_create')
+    })
+}}
+    <div class="form-container">
+        <div class="row">
+            <div class="input-field col s12">
+                {{ form_widget(widgetForm.title, {attr: {class: 'validate'}}) }}
+                <label for="{{ widgetForm.title.vars.id }}">{{ 'label.title'|trans([], 'widget') }}</label>
+                {% if widgetForm.title.vars.errors|length > 0 %}
+                    <span class="helper-text red-text">
+                        {% for error in widgetForm.title.vars.errors %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s12">
+                {{ form_widget(widgetForm.type, {attr: {class: 'validate'}}) }}
+                <label>{{ 'label.type'|trans([], 'widget') }}</label>
+                {% if widgetForm.type.vars.errors|length > 0 %}
+                    <span class="helper-text red-text">
+                        {% for error in widgetForm.type.vars.errors %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <button class="btn waves-effect waves-light" type="submit">{{ 'label.submit'|trans([], 'widget') }}</button>
+{{ form_end(widgetForm) }}
+

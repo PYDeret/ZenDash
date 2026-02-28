@@ -41,21 +41,29 @@ class WidgetCreateController extends AbstractController
         $widgetForm = $this->createForm(type: WidgetFormType::class, data: $widget);
         $widgetForm->handleRequest(request: $request);
 
-        if (!$user instanceof User || !$widgetForm->isSubmitted() || !$widgetForm->isValid()) {
-            throw new \RuntimeException($this->translator->trans('error.wrong_call', [], 'main'));
+        if ($user instanceof User && $widgetForm->isSubmitted() && $widgetForm->isValid()) {
+            $widget
+                ->setUser(user: $user)
+                ->setPosition(position: $widgetRepository->findLastestPositionByUser(user: $user))
+            ;
+
+            $this->entityManager->persist(object: $widget);
+            $this->entityManager->flush();
+
+            return $this->render(
+                view: 'broadcast/Widget/Widget.stream.html.twig',
+                parameters: [
+                    'widget' => $widget,
+                ],
+                response: new Response(content: '', status: 200, headers: ['Content-Type' => TurboBundle::STREAM_MEDIA_TYPE]));
         }
 
-        $widget->setUser(user: $user);
-        $widget->setPosition(position: $widgetRepository->findLastestPositionByUser(user: $user));
-        $this->entityManager->persist(object: $widget);
-        $this->entityManager->flush();
-
         return $this->render(
-            view: 'broadcast/Widget/Widget.stream.html.twig',
+            view: 'broadcast/widget/WidgetForm.stream.html.twig',
             parameters: [
-                'widget' => $widget,
+                'widgetForm' => $widgetForm->createView(),
             ],
-            response: new Response(content: '', status: 200, headers: ['Content-Type' => TurboBundle::STREAM_MEDIA_TYPE])
+            response: new Response(content: '', status: 422, headers: ['Content-Type' => TurboBundle::STREAM_MEDIA_TYPE])
         );
     }
 }

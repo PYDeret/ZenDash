@@ -1,9 +1,5 @@
-<turbo-stream action="update" target="widget_form_frame">
+<turbo-stream action="update" target="widget_modal_frame">
     <template>
-        {{ include('home/widget/widgetFormInner.html.twig') }}
-        <script>
-            M.FormSelect.init(document.querySelectorAll('select'));
-            M.updateTextFields();
-        </script>
+        {{ include('home/widget/widgetForm.html.twig') }}
     </template>
 </turbo-stream>

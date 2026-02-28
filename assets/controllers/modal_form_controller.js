@@ -2,9 +2,12 @@ import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
     connect() {
+        this.handler = this._handleSubmitEnd.bind(this);
+        this.element.addEventListener('turbo:submit-end', this.handler);
         this.modal = M.Modal.init(this.element, {
             onCloseEnd: () => {
-                this.element.closest('turbo-frame').innerHTML = '';
+                const frame = this.element.closest('turbo-frame');
+                if (frame) frame.innerHTML = '';
             }
         });
 
@@ -13,7 +16,10 @@ export default class extends Controller {
     }
 
     disconnect() {
-        document.removeEventListener('turbo:submit-end', this._handleSubmitEnd);
+        this.element.removeEventListener('turbo:submit-end', this.handler);
+        if (this.modal) {
+            this.modal.destroy();
+        }
     }
 
     _handleSubmitEnd(event) {

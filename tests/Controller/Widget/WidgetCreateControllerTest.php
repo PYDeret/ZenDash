@@ -57,7 +57,11 @@ final class WidgetCreateControllerTest extends WebTestCase
         self::assertNotNull($user);
 
         $this->client->loginUser(user: $user);
-        $crawler = $this->client->request(method: 'GET', uri: '/home');
+        $crawler = $this->client->request(
+            method: 'GET',
+            uri: '/widget/init'
+        );
+
         $form = $crawler->filter(selector: '#create-widget-form-element')->form(values: [
             'widget_form[title]' => self::WIDGET_NAME,
             'widget_form[type]' => 'note',

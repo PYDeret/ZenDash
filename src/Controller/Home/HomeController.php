@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Home;
 
-use App\Entity\Widget;
 use App\Repository\WidgetRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

@@ -1,0 +1,20 @@
+<div class="col s12 m6 l4" id="widget_{{ widget.id }}">
+    <div class="card widget widget--{{ widget.type.value }}">
+        <div class="card-content">
+            <span class="card-title">
+                {{ widget.title }}
+                <a href="{{ path('widget_delete', {id: widget.id}) }}"
+                   data-turbo-method="delete"
+                   data-turbo-confirm="{{ 'label.confirm_delete'|trans([], 'widget') }}"
+                   class="right"
+                >
+                    <i class="material-icons pointer">close</i>
+                </a>
+            </span>
+
+            {% if widget.content %}
+                {{ include('widget/type/' ~ widget.type.value ~ 'Widget.html.twig') }}
+            {% endif %}
+        </div>
+    </div>
+</div>

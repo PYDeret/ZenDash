@@ -1,24 +1,8 @@
 {% block create %}
-    {% set data = _context.widget ?? _context.entity ?? _context.item ?? null %}
-    {% if data %}
+    {% if widget is defined %}
         <turbo-stream action="append" target="widgets-container">
             <template>
-                <div class="col s12 m6 l4" id="widget_{{ data.id }}">
-                    <div class="card widget widget--todo">
-                        <div class="card-content">
-                            <span class="card-title">
-                                {{ data.title }}
-                                <a href="{{ path('widget_delete', {id: data.id}) }}"
-                                   data-turbo-method="delete"
-                                   data-turbo-confirm="{{ 'label.confirm_delete'|trans([], 'widget') }}"
-                                   class="right"
-                                >
-                                    <i class="material-icons pointer">close</i>
-                                </a>
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                {{ include('widget/widgetCard.html.twig') }}
             </template>
         </turbo-stream>
     {% endif %}

@@ -7,20 +7,22 @@ namespace App\Controller\Widget;
 use App\Entity\User;
 use App\Entity\Widget;
 use App\Form\Widget\WidgetFormType;
+use App\Repository\WidgetRepository;
+use App\Service\Request\RequestFormatStreamService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\Turbo\TurboBundle;
 
-class WidgetCreateController extends AbstractController
+final class WidgetCreateController extends AbstractController
 {
     public function __construct(
+        private readonly WidgetRepository $widgetRepository,
+        private readonly RequestFormatStreamService $requestFormatStreamService,
         private readonly EntityManagerInterface $entityManager,
-        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -31,12 +33,8 @@ class WidgetCreateController extends AbstractController
     #[Route(path: '/widget/create', name: 'widget_create', methods: ['POST'])]
     public function index(Request $request): Response
     {
-        if (TurboBundle::STREAM_FORMAT !== $request->getPreferredFormat()) {
-            throw new \RuntimeException($this->translator->trans('error.wrong_call', [], 'main'));
-        }
-
+        $this->requestFormatStreamService->checkStreamFormat($request);
         $user = $this->getUser();
-        $widgetRepository = $this->entityManager->getRepository(Widget::class);
         $widget = new Widget();
         $widgetForm = $this->createForm(type: WidgetFormType::class, data: $widget);
         $widgetForm->handleRequest(request: $request);
@@ -44,7 +42,7 @@ class WidgetCreateController extends AbstractController
         if ($user instanceof User && $widgetForm->isSubmitted() && $widgetForm->isValid()) {
             $widget
                 ->setUser(user: $user)
-                ->setPosition(position: $widgetRepository->findLastestPositionByUser(user: $user))
+                ->setPosition(position: $this->widgetRepository->findLastestPositionByUser(user: $user))
             ;
 
             $this->entityManager->persist(object: $widget);

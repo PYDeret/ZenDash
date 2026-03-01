@@ -16,6 +16,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+#[Route(path: '/authenticate', name: 'app_auth')]
 class AuthController extends AbstractController
 {
     public function __construct(
@@ -26,8 +27,7 @@ class AuthController extends AbstractController
     ) {
     }
 
-    #[Route(path: '/authenticate', name: 'app_auth')]
-    public function authenticate(Request $request): ?Response
+    public function __invoke(Request $request): ?Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute(route: 'app_home');

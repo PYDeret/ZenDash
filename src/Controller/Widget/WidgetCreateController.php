@@ -17,6 +17,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\UX\Turbo\TurboBundle;
 
+#[IsGranted(attribute: 'ROLE_USER')]
+#[Route(path: '/widget/create', name: 'widget_create', methods: ['POST'])]
 final class WidgetCreateController extends AbstractController
 {
     public function __construct(
@@ -29,9 +31,7 @@ final class WidgetCreateController extends AbstractController
     /**
      * @throws \Exception
      */
-    #[IsGranted(attribute: 'ROLE_USER')]
-    #[Route(path: '/widget/create', name: 'widget_create', methods: ['POST'])]
-    public function index(Request $request): Response
+    public function __invoke(Request $request): Response
     {
         $this->requestFormatStreamService->checkStreamFormat($request);
         $user = $this->getUser();
@@ -42,7 +42,7 @@ final class WidgetCreateController extends AbstractController
         if ($user instanceof User && $widgetForm->isSubmitted() && $widgetForm->isValid()) {
             $widget
                 ->setUser(user: $user)
-                ->setPosition(position: $this->widgetRepository->findLastestPositionByUser(user: $user))
+                ->setPosition(position: $this->widgetRepository->findLatestPositionByUser(user: $user))
             ;
 
             $this->entityManager->persist(object: $widget);

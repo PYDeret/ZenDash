@@ -10,7 +10,8 @@ use App\Enum\Widget\WidgetTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\Translation\Exception\NotFoundResourceException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\UX\Turbo\TurboBundle;
 
 final class WidgetDeleteControllerTest extends WebTestCase
@@ -88,8 +89,7 @@ final class WidgetDeleteControllerTest extends WebTestCase
     {
         $this->client->catchExceptions(false);
         $this->client->loginUser($this->user);
-
-        $this->expectException(NotFoundResourceException::class);
+        $this->expectException(NotFoundHttpException::class);
 
         $this->client->request(
             method: 'DELETE',
@@ -115,7 +115,7 @@ final class WidgetDeleteControllerTest extends WebTestCase
 
         $this->client->catchExceptions(false);
         $this->client->loginUser(user: $this->user);
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(BadRequestHttpException::class);
 
         $this->client->request(
             method: 'DELETE',

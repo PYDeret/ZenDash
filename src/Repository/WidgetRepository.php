@@ -19,7 +19,7 @@ class WidgetRepository extends ServiceEntityRepository
         parent::__construct($registry, Widget::class);
     }
 
-    public function findLastestPositionByUser(User $user): int
+    public function findLatestPositionByUser(User $user): int
     {
         $queryBuilder = $this->createQueryBuilder('w');
 

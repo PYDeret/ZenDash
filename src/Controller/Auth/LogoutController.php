@@ -6,10 +6,10 @@ namespace App\Controller\Auth;
 
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route(path: '/logout', name: 'app_logout')]
 class LogoutController
 {
-    #[Route(path: '/logout', name: 'app_logout')]
-    public function logout(): void
+    public function __invoke(): void
     {
         throw new \LogicException(message: '');
     }

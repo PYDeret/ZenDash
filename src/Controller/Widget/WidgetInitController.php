@@ -27,7 +27,7 @@ final class WidgetInitController extends AbstractController
         );
 
         return $this->render(
-            view: 'home/widget/widgetForm.html.twig',
+            view: 'widget/widgetForm.html.twig',
             parameters: [
                 'widgetForm' => $widgetForm->createView(),
             ],

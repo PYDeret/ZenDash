@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Widget;
 
 use App\Entity\Widget;
-use App\Helper\Request\RequestFormatStreamHelper;
 use App\Repository\WidgetRepository;
+use App\Service\Request\RequestFormatStreamService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +21,7 @@ final class WidgetDeleteController extends AbstractController
 {
     public function __construct(
         private readonly WidgetRepository $widgetRepository,
+        private readonly RequestFormatStreamService $requestFormatStreamService,
         private readonly EntityManagerInterface $entityManager,
         private readonly TranslatorInterface $translator,
     ) {
@@ -33,7 +34,7 @@ final class WidgetDeleteController extends AbstractController
     #[Route(path: '/widget/delete', name: 'widget_delete', methods: ['DELETE'])]
     public function index(Request $request): Response
     {
-        RequestFormatStreamHelper::checkStreamFormat($request, $this->translator);
+        $this->requestFormatStreamService->checkStreamFormat($request);
         $widget = $this->widgetRepository->find($request->request->get('id'));
         if (!$widget instanceof Widget) {
             throw new NotFoundResourceException($this->translator->trans('error.not_found', [], 'widget'));

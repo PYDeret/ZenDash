@@ -2,3 +2,4 @@ label:
     website: 'ZenDash'
 error:
     wrong_call: 'Ressource inaccessible'
+    wrong_action: 'Action interdite.'

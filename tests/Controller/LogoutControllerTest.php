@@ -42,7 +42,7 @@ class LogoutControllerTest extends WebTestCase
         $this->client->loginUser(user: $testUser);
         $this->client->request(method: 'GET', uri: '/logout');
 
-        self::assertResponseRedirects('/authenticate', Response::HTTP_SEE_OTHER);
+        self::assertResponseRedirects('/login', Response::HTTP_SEE_OTHER);
 
         $this->client->followRedirect();
     }

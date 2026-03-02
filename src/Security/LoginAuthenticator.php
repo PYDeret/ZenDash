@@ -22,7 +22,7 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'app_auth';
+    public const LOGIN_ROUTE = 'app_login';
 
     public function __construct(
         private readonly TranslatorInterface $translator,

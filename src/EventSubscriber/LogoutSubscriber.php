@@ -26,7 +26,7 @@ readonly class LogoutSubscriber implements EventSubscriberInterface
     public function onLogout(LogoutEvent $event): void
     {
         $event->setResponse(response: new RedirectResponse(
-            url: $this->urlGenerator->generate(name: 'app_auth'),
+            url: $this->urlGenerator->generate(name: 'app_login'),
             status: Response::HTTP_SEE_OTHER
         ));
     }

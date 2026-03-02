@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Controller\Auth;
+namespace App\Tests\Controller\Authentication;
 
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -50,7 +50,7 @@ class LoginControllerTest extends WebTestCase
 
     public function testLogin(): void
     {
-        $this->client->request(method: 'GET', uri: '/authenticate');
+        $this->client->request(method: 'GET', uri: '/login');
         self::assertResponseIsSuccessful();
 
         $this->client->submitForm(
@@ -61,11 +61,11 @@ class LoginControllerTest extends WebTestCase
             ]
         );
 
-        self::assertResponseRedirects('/authenticate');
+        self::assertResponseRedirects('/login');
         $this->client->followRedirect();
         self::assertSelectorTextContains('.card-panel.red', $this->translator->trans(id: 'error.invalid_credentials', domain: 'authentication'));
 
-        $this->client->request(method: 'GET', uri: '/authenticate');
+        $this->client->request(method: 'GET', uri: '/login');
         $this->client->submitForm(
             button: $this->translator->trans(id: 'label.connect', domain: 'authentication'),
             fieldValues: [

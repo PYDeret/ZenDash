@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Controller\Auth;
+namespace App\Tests\Controller\Authentication;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
@@ -39,7 +39,7 @@ class RegistrationControllerTest extends WebTestCase
 
     public function testRegister(): void
     {
-        $this->client->request(method: 'GET', uri: '/authenticate');
+        $this->client->request(method: 'GET', uri: '/register');
         self::assertResponseIsSuccessful();
 
         $this->client->submitForm(

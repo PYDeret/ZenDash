@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Auth;
+namespace App\Controller\Authentication;
 
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/logout', name: 'app_logout')]
-class LogoutController
+final class LogoutController
 {
     public function __invoke(): void
     {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Auth;
+namespace App\Controller\Authentication;
 
 use App\Entity\User;
 use App\Form\Auth\RegistrationFormType;
@@ -16,8 +16,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-#[Route(path: '/authenticate', name: 'app_auth')]
-class AuthController extends AbstractController
+#[Route(path: '/register', name: 'app_register')]
+final class RegistrationController extends AbstractController
 {
     public function __construct(
         private readonly Security $security,
@@ -29,13 +29,6 @@ class AuthController extends AbstractController
 
     public function __invoke(Request $request): ?Response
     {
-        if ($this->getUser()) {
-            return $this->redirectToRoute(route: 'app_home');
-        }
-
-        $error = $this->authenticationUtils->getLastAuthenticationError();
-        $lastUsername = $this->authenticationUtils->getLastUsername();
-
         $user = new User();
         $registrationForm = $this->createForm(type: RegistrationFormType::class, data: $user);
         $registrationForm->handleRequest(request: $request);
@@ -53,16 +46,10 @@ class AuthController extends AbstractController
             );
         }
 
-        $activeTab = 'login';
-        if ($registrationForm->isSubmitted() && !$registrationForm->isValid()) {
-            $activeTab = 'register';
-        }
-
-        return $this->render(view: 'auth/authenticate.html.twig', parameters: [
+        return $this->render(view: 'authentication/authenticate.html.twig', parameters: [
             'registrationForm' => $registrationForm,
-            'lastUsername' => $lastUsername,
-            'error' => $error,
-            'activeTab' => $activeTab,
+            'error' => $this->authenticationUtils->getLastAuthenticationError(),
+            'lastUsername' => $this->authenticationUtils->getLastUsername(),
         ]);
     }
 }

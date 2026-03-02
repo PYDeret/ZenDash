@@ -39,7 +39,7 @@ class RegistrationControllerTest extends WebTestCase
 
     public function testRegister(): void
     {
-        $this->client->request(method: 'GET', uri: '/authenticate');
+        $this->client->request(method: 'GET', uri: '/register');
         self::assertResponseIsSuccessful();
 
         $this->client->submitForm(

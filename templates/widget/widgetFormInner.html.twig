@@ -9,7 +9,10 @@
         action: path('widget_create')
     })
 }}
-    <div class="form-container">
+    <div class="form-container"
+         data-controller="widgets--widgets-type"
+         data-widgets--widgets-type-url-value="{{ path('widget_get_partial') }}"
+    >
         <div class="row">
             <div class="input-field col s12">
                 {{ form_widget(widgetForm.title, {attr: {class: 'validate'}}) }}
@@ -26,7 +29,14 @@
 
         <div class="row">
             <div class="input-field col s12">
-                {{ form_widget(widgetForm.type, {attr: {class: 'validate'}}) }}
+                {{
+                    form_widget(widgetForm.type, {
+                        attr: {
+                            class: 'validate',
+                            'data-action': 'change->widgets--widgets-type#changeType'
+                        }
+                    })
+                }}
                 <label>{{ 'label.type'|trans([], 'widget') }}</label>
                 {% if widgetForm.type.vars.errors|length > 0 %}
                     <span class="helper-text red-text">
@@ -37,6 +47,8 @@
                 {% endif %}
             </div>
         </div>
+
+        <turbo-frame id="widget_partial" data-widgets--widgets-type-target="frame"></turbo-frame>
     </div>
     <button class="btn waves-effect waves-light" type="submit">{{ 'label.submit'|trans([], 'widget') }}</button>
 {{ form_end(widgetForm) }}

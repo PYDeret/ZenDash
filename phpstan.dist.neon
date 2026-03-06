@@ -6,6 +6,10 @@ parameters:
         - tests
     symfony:
         containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
+    ignoreErrors:
+        -
+            message: '#has parameter \$builder with no value type specified in iterable type array#'
+            path: src/Form/
 
 includes:
     - vendor/phpstan/phpstan-symfony/extension.neon

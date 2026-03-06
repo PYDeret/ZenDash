@@ -27,7 +27,7 @@ class Widget
     #[ORM\Column(enumType: WidgetTypeEnum::class)]
     private ?WidgetTypeEnum $type = null;
 
-    /** @var array<string, mixed>|null */
+    /** @var array{text?: string, task?: string, done?: bool}|null */
     #[ORM\Column(nullable: true)]
     private ?array $content = null;
 
@@ -67,13 +67,13 @@ class Widget
         return $this;
     }
 
-    /** @return array<string, mixed>|null */
+    /** @return array{text?: string, task?: string, done?: bool}|null */
     public function getContent(): ?array
     {
         return $this->content;
     }
 
-    /** @param array<string, mixed>|null $content */
+    /** @param array{text?: string, task?: string, done?: bool}|null $content */
     public function setContent(?array $content): static
     {
         $this->content = $content;

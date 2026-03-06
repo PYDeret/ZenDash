@@ -1,4 +1,4 @@
-<turbo-frame id="widget_partial" data-widgets--widgets-type-target="frame">
+{% if withFrame ?? true %}<turbo-frame id="widget_partial" data-widgets--widgets-type-target="frame">{% endif %}
     <div class="row">
         <div class="input-field col s12">
             {{ form_widget(contentForm.text, {attr: {class: 'validate'}}) }}
@@ -12,4 +12,4 @@
             {% endif %}
         </div>
     </div>
-</turbo-frame>
+{% if withFrame ?? true %}</turbo-frame>{% endif %}

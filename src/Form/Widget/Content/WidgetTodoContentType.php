@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @extends AbstractType<array>
@@ -22,6 +23,7 @@ class WidgetTodoContentType extends AbstractType
         $builder
             ->add(child: 'task', type: TextType::class, options: [
                 'label' => 'label.reminder',
+                'constraints' => [new NotBlank(message: 'widget.task_text')],
             ])
         ;
 

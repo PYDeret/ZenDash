@@ -48,7 +48,14 @@
             </div>
         </div>
 
-        <turbo-frame id="widget_partial" data-widgets--widgets-type-target="frame"></turbo-frame>
+        <turbo-frame id="widget_partial" data-widgets--widgets-type-target="frame">
+            {% if widgetForm.vars.submitted and widgetForm.content is defined %}
+                {{ include('widget/partials/' ~ widgetForm.type.vars.data.value ~ 'FormPartial.html.twig', {
+                    contentForm: widgetForm.content,
+                    withFrame: false
+                }) }}
+            {% endif %}
+        </turbo-frame>
     </div>
     <button class="btn waves-effect waves-light" type="submit">{{ 'label.submit'|trans([], 'widget') }}</button>
 {{ form_end(widgetForm) }}

@@ -6,6 +6,7 @@ namespace App\Controller\Widget;
 
 use App\Entity\User;
 use App\Entity\Widget;
+use App\Enum\Widget\WidgetTypeEnum;
 use App\Form\Widget\WidgetFormType;
 use App\Repository\WidgetRepository;
 use App\Service\Request\RequestFormatStreamService;
@@ -36,7 +37,12 @@ final class WidgetCreateController extends AbstractController
         $this->requestFormatStreamService->checkStreamFormat($request);
         $user = $this->getUser();
         $widget = new Widget();
-        $widgetForm = $this->createForm(type: WidgetFormType::class, data: $widget);
+        $widgetForm = $this->createForm(
+            type: WidgetFormType::class,
+            data: $widget,
+            options: ['widget_type' => WidgetTypeEnum::tryFrom($request->request->all()['widget_form']['type'] ?? '')]
+        );
+
         $widgetForm->handleRequest(request: $request);
 
         if ($user instanceof User && $widgetForm->isSubmitted() && $widgetForm->isValid()) {

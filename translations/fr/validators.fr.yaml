@@ -1,3 +1,5 @@
 widget:
     title: 'Le titre ne doît pas être vide.'
     type: 'Le type ne doît pas être vide.'
+    note_text: 'Vous devez écrire une note.'
+    task_text: 'Vous devez écrire un rappel.'

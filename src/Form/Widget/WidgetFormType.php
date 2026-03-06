@@ -6,6 +6,8 @@ namespace App\Form\Widget;
 
 use App\Entity\Widget;
 use App\Enum\Widget\WidgetTypeEnum;
+use App\Form\Widget\Content\WidgetNoteContentType;
+use App\Form\Widget\Content\WidgetTodoContentType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -30,6 +32,12 @@ class WidgetFormType extends AbstractType
                 'choice_label' => fn (WidgetTypeEnum $choice) => 'widget_type.'.$choice->value,
             ])
         ;
+
+        match ($options['widget_type']) {
+            WidgetTypeEnum::NOTE => $builder->add('content', WidgetNoteContentType::class),
+            WidgetTypeEnum::TODO => $builder->add('content', WidgetTodoContentType::class),
+            default => null,
+        };
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -37,6 +45,12 @@ class WidgetFormType extends AbstractType
         $resolver->setDefaults(defaults: [
             'data_class' => Widget::class,
             'translation_domain' => 'widget',
+            'widget_type' => null,
         ]);
+
+        $resolver->setAllowedTypes(
+            option: 'widget_type',
+            allowedTypes: ['null', WidgetTypeEnum::class]
+        );
     }
 }

@@ -1,3 +1,15 @@
 <turbo-frame id="widget_partial" data-widgets--widgets-type-target="frame">
-    b
+    <div class="row">
+        <div class="input-field col s12">
+            {{ form_widget(contentForm.task, {attr: {class: 'validate'}}) }}
+            <label for="{{ contentForm.task.vars.id }}">{{ 'label.reminder'|trans([], 'widget') }}</label>
+            {% if contentForm.task.vars.errors|length > 0 %}
+                <span class="helper-text red-text">
+                            {% for error in contentForm.task.vars.errors %}
+                                {{ error.message }}
+                            {% endfor %}
+                        </span>
+            {% endif %}
+        </div>
+    </div>
 </turbo-frame>

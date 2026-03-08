@@ -27,7 +27,7 @@ final class WidgetContentController extends AbstractController
         $type = WidgetTypeEnum::tryFrom(value: $request->query->get('type', ''));
 
         if ($type === null) {
-            throw new BadRequestHttpException($this->translator->trans('error.wrong_call', [], 'main'));
+            throw new BadRequestHttpException(message: $this->translator->trans('error.wrong_call', [], 'main'));
         }
 
         $formView = $this->createForm(
@@ -36,7 +36,8 @@ final class WidgetContentController extends AbstractController
         )->createView();
 
         return $this->render(
-            view: 'widget/partials/'.$type->value.'FormPartial.html.twig', parameters: [
+            view: 'widget/partials/'.$type->value.'FormPartial.html.twig',
+            parameters: [
                 'contentForm' => $formView['content'],
             ]
         );

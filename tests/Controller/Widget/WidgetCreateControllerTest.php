@@ -16,6 +16,8 @@ use Symfony\UX\Turbo\TurboBundle;
 final class WidgetCreateControllerTest extends WebTestCase
 {
     private const WIDGET_NAME = 'Test Widget';
+    private const NOTE_TEXT = 'Test note content';
+    private const TODO_TASK = 'Test todo task';
 
     private KernelBrowser $client;
     private ContainerInterface $container;
@@ -51,25 +53,27 @@ final class WidgetCreateControllerTest extends WebTestCase
         $em->flush();
     }
 
-    public function testAddWidgetViaTurboStream(): void
+    public function testAddNoteWidgetViaTurboStream(): void
     {
         $user = $this->container->get(UserRepository::class)->findOneByEmail('me@example.com');
         self::assertNotNull($user);
 
         $this->client->loginUser(user: $user);
-        $crawler = $this->client->request(
-            method: 'GET',
-            uri: '/widget/init'
-        );
 
-        $form = $crawler->filter(selector: '#create-widget-form-element')->form(values: [
-            'widget_form[title]' => self::WIDGET_NAME,
-            'widget_form[type]' => 'note',
-        ]);
+        $csrfToken = $this->getCsrfToken();
 
-        $this->client->submit(
-            form: $form,
-            serverParameters: [
+        $this->client->request(
+            method: 'POST',
+            uri: '/widget/create',
+            parameters: [
+                'widget_form' => [
+                    'title' => self::WIDGET_NAME,
+                    'type' => 'note',
+                    'content' => ['text' => self::NOTE_TEXT],
+                    '_token' => $csrfToken,
+                ],
+            ],
+            server: [
                 'HTTP_ACCEPT' => TurboBundle::STREAM_MEDIA_TYPE,
                 'QUERY_STRING' => '_format='.TurboBundle::STREAM_FORMAT,
             ]
@@ -77,13 +81,60 @@ final class WidgetCreateControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         self::assertResponseHeaderSame('Content-Type', TurboBundle::STREAM_MEDIA_TYPE.'; charset=UTF-8');
-
         self::assertSelectorExists(selector: 'turbo-stream');
+
         $em = $this->container->get(id: 'doctrine.orm.entity_manager');
         $widget = $em->getRepository(Widget::class)->findOneBy(['title' => self::WIDGET_NAME]);
 
         self::assertNotNull($widget);
         self::assertInstanceOf(User::class, $user);
         self::assertEquals($user->getId(), $widget->getUser()?->getId());
+        self::assertEquals(['text' => self::NOTE_TEXT], $widget->getContent());
+    }
+
+    public function testAddTodoWidgetViaTurboStream(): void
+    {
+        $user = $this->container->get(UserRepository::class)->findOneByEmail('me@example.com');
+        self::assertNotNull($user);
+
+        $this->client->loginUser(user: $user);
+
+        $csrfToken = $this->getCsrfToken();
+
+        $this->client->request(
+            method: 'POST',
+            uri: '/widget/create',
+            parameters: [
+                'widget_form' => [
+                    'title' => self::WIDGET_NAME,
+                    'type' => 'todo',
+                    'content' => ['task' => self::TODO_TASK],
+                    '_token' => $csrfToken,
+                ],
+            ],
+            server: [
+                'HTTP_ACCEPT' => TurboBundle::STREAM_MEDIA_TYPE,
+                'QUERY_STRING' => '_format='.TurboBundle::STREAM_FORMAT,
+            ]
+        );
+
+        self::assertResponseIsSuccessful();
+        self::assertResponseHeaderSame('Content-Type', TurboBundle::STREAM_MEDIA_TYPE.'; charset=UTF-8');
+        self::assertSelectorExists(selector: 'turbo-stream');
+
+        $em = $this->container->get(id: 'doctrine.orm.entity_manager');
+        $widget = $em->getRepository(Widget::class)->findOneBy(['title' => self::WIDGET_NAME]);
+
+        self::assertNotNull($widget);
+        self::assertInstanceOf(User::class, $user);
+        self::assertEquals($user->getId(), $widget->getUser()?->getId());
+        self::assertEquals(['task' => self::TODO_TASK, 'done' => false], $widget->getContent());
+    }
+
+    private function getCsrfToken(): string
+    {
+        $crawler = $this->client->request(method: 'GET', uri: '/widget/init');
+
+        return (string) $crawler->filter(selector: 'input[name="widget_form[_token]"]')->attr('value');
     }
 }

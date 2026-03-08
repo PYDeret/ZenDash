@@ -46,10 +46,13 @@ final class RegistrationController extends AbstractController
             );
         }
 
-        return $this->render(view: 'authentication/authenticate.html.twig', parameters: [
-            'registrationForm' => $registrationForm,
-            'error' => $this->authenticationUtils->getLastAuthenticationError(),
-            'lastUsername' => $this->authenticationUtils->getLastUsername(),
-        ]);
+        return $this->render(
+            view: 'authentication/authenticate.html.twig',
+            parameters: [
+                'registrationForm' => $registrationForm,
+                'error' => $this->authenticationUtils->getLastAuthenticationError(),
+                'lastUsername' => $this->authenticationUtils->getLastUsername(),
+            ]
+        );
     }
 }

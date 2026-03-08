@@ -12,6 +12,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -33,11 +36,13 @@ class WidgetFormType extends AbstractType
             ])
         ;
 
-        match ($options['widget_type']) {
-            WidgetTypeEnum::NOTE => $builder->add('content', WidgetNoteContentType::class),
-            WidgetTypeEnum::TODO => $builder->add('content', WidgetTodoContentType::class),
-            default => null,
-        };
+        $this->addContentField($builder, $options['widget_type']);
+        $builder->addEventListener(
+            eventName: FormEvents::PRE_SUBMIT,
+            listener: function (FormEvent $event): void {
+                $this->addContentField($event->getForm(), WidgetTypeEnum::tryFrom(value: $event->getData()['type'] ?? ''));
+            }
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -52,5 +57,15 @@ class WidgetFormType extends AbstractType
             option: 'widget_type',
             allowedTypes: ['null', WidgetTypeEnum::class]
         );
+    }
+
+    /** @param FormInterface<Widget>|FormBuilderInterface<Widget|null> $form */
+    private function addContentField(FormInterface|FormBuilderInterface $form, ?WidgetTypeEnum $type): void
+    {
+        match ($type) {
+            WidgetTypeEnum::NOTE => $form->add('content', WidgetNoteContentType::class),
+            WidgetTypeEnum::TODO => $form->add('content', WidgetTodoContentType::class),
+            default => null,
+        };
     }
 }

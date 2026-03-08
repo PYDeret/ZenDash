@@ -6,20 +6,19 @@ namespace App\Controller\Widget;
 
 use App\Entity\User;
 use App\Entity\Widget;
+use App\Enum\Widget\WidgetTypeEnum;
 use App\Form\Widget\WidgetFormType;
 use App\Repository\WidgetRepository;
 use App\Service\Request\RequestFormatStreamService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\UX\Turbo\TurboBundle;
 
 #[IsGranted(attribute: 'ROLE_USER')]
 #[Route(path: '/widget/create', name: 'widget_create', methods: ['POST'])]
-final class WidgetCreateController extends AbstractController
+final class WidgetCreateController extends AbstractWidgetController
 {
     public function __construct(
         private readonly WidgetRepository $widgetRepository,
@@ -45,23 +44,29 @@ final class WidgetCreateController extends AbstractController
                 ->setPosition(position: $this->widgetRepository->findLatestPositionByUser(user: $user))
             ;
 
+            $content = $widget->getContent();
+            if (is_array($content) && !isset($content['done']) && $widget->getType() === WidgetTypeEnum::TODO) {
+                $widget->setContent([...$content, 'done' => false]);
+            }
+
             $this->entityManager->persist(object: $widget);
             $this->entityManager->flush();
 
-            return $this->render(
+            return $this->renderTurboStream(
                 view: 'broadcast/Widget/Widget.stream.html.twig',
+                status: Response::HTTP_OK,
                 parameters: [
                     'widget' => $widget,
                 ],
-                response: new Response(content: '', status: 200, headers: ['Content-Type' => TurboBundle::STREAM_MEDIA_TYPE]));
+            );
         }
 
-        return $this->render(
-            view: 'broadcast/widget/WidgetForm.stream.html.twig',
+        return $this->renderTurboStream(
+            view: 'broadcast/Widget/WidgetForm.stream.html.twig',
+            status: Response::HTTP_UNPROCESSABLE_ENTITY,
             parameters: [
                 'widgetForm' => $widgetForm->createView(),
             ],
-            response: new Response(content: '', status: 422, headers: ['Content-Type' => TurboBundle::STREAM_MEDIA_TYPE])
         );
     }
 }

@@ -34,11 +34,14 @@ final class LoginController extends AbstractController
             $activeTab = 'register';
         }
 
-        return $this->render(view: 'authentication/authenticate.html.twig', parameters: [
-            'registrationForm' => $registrationForm,
-            'lastUsername' => $this->authenticationUtils->getLastUsername(),
-            'error' => $this->authenticationUtils->getLastAuthenticationError(),
-            'activeTab' => $activeTab,
-        ]);
+        return $this->render(
+            view: 'authentication/authenticate.html.twig',
+            parameters: [
+                'registrationForm' => $registrationForm,
+                'lastUsername' => $this->authenticationUtils->getLastUsername(),
+                'error' => $this->authenticationUtils->getLastAuthenticationError(),
+                'activeTab' => $activeTab,
+            ]
+        );
     }
 }

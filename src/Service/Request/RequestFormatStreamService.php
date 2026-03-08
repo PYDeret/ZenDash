@@ -18,7 +18,7 @@ final readonly class RequestFormatStreamService
     public function checkStreamFormat(Request $request): void
     {
         if (TurboBundle::STREAM_FORMAT !== $request->getPreferredFormat()) {
-            throw new BadRequestHttpException($this->translator->trans('error.wrong_call', [], 'main'));
+            throw new BadRequestHttpException(message: $this->translator->trans('error.wrong_call', [], 'main'));
         }
     }
 }

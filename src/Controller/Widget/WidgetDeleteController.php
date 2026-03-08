@@ -9,7 +9,6 @@ use App\Entity\Widget;
 use App\Repository\WidgetRepository;
 use App\Service\Request\RequestFormatStreamService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -17,11 +16,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\UX\Turbo\TurboBundle;
 
 #[IsGranted(attribute: 'ROLE_USER')]
 #[Route(path: '/widget/delete', name: 'widget_delete', methods: ['DELETE'])]
-final class WidgetDeleteController extends AbstractController
+final class WidgetDeleteController extends AbstractWidgetController
 {
     public function __construct(
         private readonly WidgetRepository $widgetRepository,
@@ -51,15 +49,12 @@ final class WidgetDeleteController extends AbstractController
         $this->entityManager->remove($widget);
         $this->entityManager->flush();
 
-        return $this->render(
+        return $this->renderTurboStream(
             view: 'broadcast/Widget/Widget.stream.html.twig',
+            status: Response::HTTP_OK,
             parameters: [
                 'id' => $id,
             ],
-            response: new Response(
-                status: 200,
-                headers: ['Content-Type' => TurboBundle::STREAM_MEDIA_TYPE]
-            )
         );
     }
 }

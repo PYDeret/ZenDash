@@ -9,6 +9,8 @@ label:
     add: 'Ajouter un widget'
     no_widget: 'Pas de widget pour le moment'
     confirm_delete: 'Confirmez vous la suppression de ce widget ?'
+    note: 'Que faut t''il noter ?'
+    reminder: 'Quelle est la tâche à accomplir ?'
 widget_type:
     note: 'Note'
     todo: 'À faire'
